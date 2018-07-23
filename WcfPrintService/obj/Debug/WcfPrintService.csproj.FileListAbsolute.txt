@@ -1,0 +1,7 @@
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\bin\WcfPrintService.dll.config
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\bin\WcfPrintService.dll
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\bin\WcfPrintService.pdb
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\obj\Debug\WcfPrintService.csprojAssemblyReference.cache
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\obj\Debug\WcfPrintService.csproj.CoreCompileInputs.cache
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\obj\Debug\WcfPrintService.dll
+C:\Users\Adam\source\repos\WcfPrintService\WcfPrintService\obj\Debug\WcfPrintService.pdb
