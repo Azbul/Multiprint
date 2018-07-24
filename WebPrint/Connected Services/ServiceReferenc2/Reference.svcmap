@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a6ae7eab-8776-476b-acfe-df26f8a1c2cd" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="706030d6-d7e1-436b-9bb9-695e008f76f4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -13,7 +13,7 @@
     <GenerateSerializableTypes>true</GenerateSerializableTypes>
     <Serializer>Auto</Serializer>
     <UseSerializerForFaults>true</UseSerializerForFaults>
-    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
     <ReferencedAssemblies />
     <ReferencedDataContractTypes />
     <ServiceContractMappings />
@@ -22,10 +22,10 @@
     <MetadataSource Address="http://localhost:53178/PrintService/Service1.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="3ad57222-64c7-44d5-a68b-9e6390edef1b" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?disco" />
-    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="42978123-8f31-4586-a39e-30f6730551ae" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?xsd=xsd0" />
-    <MetadataFile FileName="Service11.xsd" MetadataType="Schema" ID="270c500f-ac1e-4871-9d94-9d20c668034a" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="777ea723-f33f-4a48-b34c-195480bd6f47" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?wsdl" />
+    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="d303f909-4ed8-4f99-aa27-da1d8384fe0b" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?disco" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="2472db35-9fa9-4b38-acce-73fa0012be93" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service11.xsd" MetadataType="Schema" ID="fa45a9d7-0885-410b-948d-f4838a18be36" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="c6d5372c-0145-4287-a530-69fafdeef214" SourceId="1" SourceUrl="http://localhost:53178/PrintService/Service1.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

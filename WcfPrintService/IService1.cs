@@ -19,7 +19,8 @@ namespace WcfPrintService
         [OperationContract]
         string ConnectionTest();
 
-
+        [OperationContract]
+        int GetPrinterCount();
 
     }
 

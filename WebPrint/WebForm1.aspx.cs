@@ -10,16 +10,17 @@ namespace WebPrint
     public partial class WebForm1 : System.Web.UI.Page
     {
 
-        ServiceReference.Service1Client client;
+        ServiceReferenc2.Service1Client client;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            client = new ServiceReference.Service1Client();
+            client = new ServiceReferenc2.Service1Client();
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
             Label1.Text = client.ConnectionTest();
+            Button1.Text = Convert.ToString(client.GetPrinterCount());
            
            
         }

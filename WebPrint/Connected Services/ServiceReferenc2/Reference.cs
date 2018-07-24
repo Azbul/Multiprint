@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebPrint.ServiceReference1 {
+namespace WebPrint.ServiceReferenc2 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReferenc2.IService1")]
     public interface IService1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStatus", ReplyAction="http://tempuri.org/IService1/GetStatusResponse")]
@@ -26,15 +26,21 @@ namespace WebPrint.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ConnectionTest", ReplyAction="http://tempuri.org/IService1/ConnectionTestResponse")]
         System.Threading.Tasks.Task<string> ConnectionTestAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrinterCount", ReplyAction="http://tempuri.org/IService1/GetPrinterCountResponse")]
+        int GetPrinterCount();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrinterCount", ReplyAction="http://tempuri.org/IService1/GetPrinterCountResponse")]
+        System.Threading.Tasks.Task<int> GetPrinterCountAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IService1Channel : WebPrint.ServiceReference1.IService1, System.ServiceModel.IClientChannel {
+    public interface IService1Channel : WebPrint.ServiceReferenc2.IService1, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class Service1Client : System.ServiceModel.ClientBase<WebPrint.ServiceReference1.IService1>, WebPrint.ServiceReference1.IService1 {
+    public partial class Service1Client : System.ServiceModel.ClientBase<WebPrint.ServiceReferenc2.IService1>, WebPrint.ServiceReferenc2.IService1 {
         
         public Service1Client() {
         }
@@ -69,6 +75,14 @@ namespace WebPrint.ServiceReference1 {
         
         public System.Threading.Tasks.Task<string> ConnectionTestAsync() {
             return base.Channel.ConnectionTestAsync();
+        }
+        
+        public int GetPrinterCount() {
+            return base.Channel.GetPrinterCount();
+        }
+        
+        public System.Threading.Tasks.Task<int> GetPrinterCountAsync() {
+            return base.Channel.GetPrinterCountAsync();
         }
     }
 }

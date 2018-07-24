@@ -5,6 +5,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Drawing;
+using System.Drawing.Printing;
 
 namespace WcfPrintService
 {
@@ -25,15 +27,20 @@ namespace WcfPrintService
             using (UserContext db = new UserContext())
             {
                 Printer printer1 = new Printer { Prn_name = "Sansung", Pc_name = "PC-01", Status = 1 };
-                db.Printers.Add(printer1);
-                db.SaveChanges();
                 var printers = db.Printers;
                 foreach (Printer p in printers)
                 {
-                    outp += p.Prn_name;
+                    outp += p.Pc_name;
                 }
             }
                 return outp;
         }
+
+        public int GetPrinterCount()
+        {
+            int count = PrinterSettings.InstalledPrinters.Count;
+            return count;
+        }
+
     }
 }
