@@ -14,7 +14,11 @@ namespace WcfPrintService
     {
 
         [OperationContract]
-        string GetStatus(int value);
+        string GetStatus(string value);
+
+        [OperationContract]
+        string ConnectionTest();
+
 
 
     }

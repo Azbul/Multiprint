@@ -9,15 +9,19 @@ namespace WebPrint
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        PrinterService.Service1Client client;
+
+        ServiceReference.Service1Client client;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            client = new PrinterService.Service1Client();
+            client = new ServiceReference.Service1Client();
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            Label1.Text = client.GetStatus(1);
+            Label1.Text = client.ConnectionTest();
+           
+           
         }
     }
 }
