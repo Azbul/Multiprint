@@ -15,23 +15,11 @@ namespace WebPrint.ServiceReferenc2 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReferenc2.IService1")]
     public interface IService1 {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStatus", ReplyAction="http://tempuri.org/IService1/GetStatusResponse")]
-        string GetStatus(string value);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PrintersDataToDb", ReplyAction="http://tempuri.org/IService1/PrintersDataToDbResponse")]
+        int PrintersDataToDb();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetStatus", ReplyAction="http://tempuri.org/IService1/GetStatusResponse")]
-        System.Threading.Tasks.Task<string> GetStatusAsync(string value);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ConnectionTest", ReplyAction="http://tempuri.org/IService1/ConnectionTestResponse")]
-        string ConnectionTest();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ConnectionTest", ReplyAction="http://tempuri.org/IService1/ConnectionTestResponse")]
-        System.Threading.Tasks.Task<string> ConnectionTestAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrinterCount", ReplyAction="http://tempuri.org/IService1/GetPrinterCountResponse")]
-        int GetPrinterCount();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrinterCount", ReplyAction="http://tempuri.org/IService1/GetPrinterCountResponse")]
-        System.Threading.Tasks.Task<int> GetPrinterCountAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PrintersDataToDb", ReplyAction="http://tempuri.org/IService1/PrintersDataToDbResponse")]
+        System.Threading.Tasks.Task<int> PrintersDataToDbAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -61,28 +49,12 @@ namespace WebPrint.ServiceReferenc2 {
                 base(binding, remoteAddress) {
         }
         
-        public string GetStatus(string value) {
-            return base.Channel.GetStatus(value);
+        public int PrintersDataToDb() {
+            return base.Channel.PrintersDataToDb();
         }
         
-        public System.Threading.Tasks.Task<string> GetStatusAsync(string value) {
-            return base.Channel.GetStatusAsync(value);
-        }
-        
-        public string ConnectionTest() {
-            return base.Channel.ConnectionTest();
-        }
-        
-        public System.Threading.Tasks.Task<string> ConnectionTestAsync() {
-            return base.Channel.ConnectionTestAsync();
-        }
-        
-        public int GetPrinterCount() {
-            return base.Channel.GetPrinterCount();
-        }
-        
-        public System.Threading.Tasks.Task<int> GetPrinterCountAsync() {
-            return base.Channel.GetPrinterCountAsync();
+        public System.Threading.Tasks.Task<int> PrintersDataToDbAsync() {
+            return base.Channel.PrintersDataToDbAsync();
         }
     }
 }

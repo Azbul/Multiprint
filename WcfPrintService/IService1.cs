@@ -12,15 +12,11 @@ namespace WcfPrintService
     [ServiceContract]
     public interface IService1
     {
+        
 
         [OperationContract]
-        string GetStatus(string value);
-
-        [OperationContract]
-        string ConnectionTest();
-
-        [OperationContract]
-        int GetPrinterCount();
+        int PrintersDataToDb();
+        
 
     }
 

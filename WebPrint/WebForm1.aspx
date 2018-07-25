@@ -10,11 +10,21 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Button ID="Button1" runat="server" Text="Получить статус" OnClick="Button1_Click" />
+            <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> <br/>
+            <asp:RadioButtonList ID="RadioButtonList1" runat="server" OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged">
+                <asp:ListItem Text="Принтер1" Value="1"></asp:ListItem> 
+                <asp:ListItem Text="Принтер2" Value="2"></asp:ListItem> 
+                <asp:ListItem Text="Принтер3" Value="3"></asp:ListItem> 
+            </asp:RadioButtonList>
+            <asp:Button ID="Button1" runat="server" Text="Обновить" OnClick="Button1_Click" /> <br/> <br/>
+            <asp:Label ID="Label1" runat="server" Text="Изменить статус принтера"></asp:Label><br/>
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <br/>
         </div>
         <p>
-            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
-        </p>
+            &nbsp;</p>
+        <p>
+            &nbsp;</p>
     </form>
 </body>
 </html>

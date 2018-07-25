@@ -7,6 +7,7 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Data.Entity;
 
 namespace WcfPrintService
 {
@@ -15,31 +16,46 @@ namespace WcfPrintService
     public class Service1 : IService1
     {
         
+        
 
-        public string GetStatus(string value)
+        List<Printer> allPrinters = new List<Printer>()
         {
-            return string.Format("Check status: {0}", value);
-        }
-
-        public string ConnectionTest()
-        {
-            string outp = "";
-            using (UserContext db = new UserContext())
+            //TEST PRINTERS
+            new Printer
             {
-                Printer printer1 = new Printer { Prn_name = "Sansung", Pc_name = "PC-01", Status = 1 };
-                var printers = db.Printers;
-                foreach (Printer p in printers)
-                {
-                    outp += p.Pc_name;
-                }
-            }
-                return outp;
-        }
+                Prn_name = "Pr1",
+                Pc_name = "PC",
+                Status = 1
+            },
 
-        public int GetPrinterCount()
+            new Printer
+            {
+                Prn_name = "Pr2",
+                Pc_name = "PC",
+                Status = 2
+            },
+
+            new Printer
+            {
+                Prn_name = "Pr1",
+                Pc_name = "PC",
+                Status = 3
+            }
+        };
+
+        // context.Configuration.AutoDetectChangesEnabled = false;
+        // context.ChangeTracker.DetectChanges();
+        public int PrintersDataToDb()
         {
-            int count = PrinterSettings.InstalledPrinters.Count;
-            return count;
+            UserContext db = new UserContext();
+           // db.Printers.Add(allPrinters[1]);
+            var countPr = db.Printers.Count();
+            if (countPr != 0)
+                db.Database.ExecuteSqlCommand("TRUNCATE TABLE Printers"); //не может определить
+
+            allPrinters.ForEach(p => db.Printers.Add(p));
+            db.SaveChanges();
+            return 1;
         }
 
     }

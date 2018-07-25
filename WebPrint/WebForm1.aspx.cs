@@ -15,14 +15,23 @@ namespace WebPrint
         protected void Page_Load(object sender, EventArgs e)
         {
             client = new ServiceReferenc2.Service1Client();
+            
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            Label1.Text = client.ConnectionTest();
-            Button1.Text = Convert.ToString(client.GetPrinterCount());
-           
-           
+            //Label1.Text = RadioButtonList1.Items[0].Text;
+            Label1.Text = Convert.ToString(client.PrintersDataToDb());
+        }
+
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
