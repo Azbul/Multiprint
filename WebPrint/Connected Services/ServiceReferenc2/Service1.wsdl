@@ -4,24 +4,63 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:53178/PrintService/Service1.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:53178/PrintService/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:53178/PrintService/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfPrintService" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IService1_PrintersDataToDb_InputMessage">
-    <wsdl:part name="parameters" element="tns:PrintersDataToDb" />
+  <wsdl:message name="IService1_InitializeComponentsToDb_InputMessage">
+    <wsdl:part name="parameters" element="tns:InitializeComponentsToDb" />
   </wsdl:message>
-  <wsdl:message name="IService1_PrintersDataToDb_OutputMessage">
-    <wsdl:part name="parameters" element="tns:PrintersDataToDbResponse" />
+  <wsdl:message name="IService1_InitializeComponentsToDb_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InitializeComponentsToDbResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetPrintersFromDb_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPrintersFromDb" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetPrintersFromDb_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPrintersFromDbResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_Test_InputMessage">
+    <wsdl:part name="parameters" element="tns:Test" />
+  </wsdl:message>
+  <wsdl:message name="IService1_Test_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TestResponse" />
   </wsdl:message>
   <wsdl:portType name="IService1">
-    <wsdl:operation name="PrintersDataToDb">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/PrintersDataToDb" message="tns:IService1_PrintersDataToDb_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/PrintersDataToDbResponse" message="tns:IService1_PrintersDataToDb_OutputMessage" />
+    <wsdl:operation name="InitializeComponentsToDb">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/InitializeComponentsToDb" message="tns:IService1_InitializeComponentsToDb_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/InitializeComponentsToDbResponse" message="tns:IService1_InitializeComponentsToDb_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPrintersFromDb">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetPrintersFromDb" message="tns:IService1_GetPrintersFromDb_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetPrintersFromDbResponse" message="tns:IService1_GetPrintersFromDb_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Test">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/Test" message="tns:IService1_Test_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/TestResponse" message="tns:IService1_Test_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="PrintersDataToDb">
-      <soap:operation soapAction="http://tempuri.org/IService1/PrintersDataToDb" style="document" />
+    <wsdl:operation name="InitializeComponentsToDb">
+      <soap:operation soapAction="http://tempuri.org/IService1/InitializeComponentsToDb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPrintersFromDb">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetPrintersFromDb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Test">
+      <soap:operation soapAction="http://tempuri.org/IService1/Test" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

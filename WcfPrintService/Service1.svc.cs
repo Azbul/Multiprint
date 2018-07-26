@@ -15,48 +15,32 @@ namespace WcfPrintService
     // ПРИМЕЧАНИЕ. Чтобы запустить клиент проверки WCF для тестирования службы, выберите элементы Service1.svc или Service1.svc.cs в обозревателе решений и начните отладку.
     public class Service1 : IService1
     {
-        
-        
-
-        List<Printer> allPrinters = new List<Printer>()
+        public Service1()
         {
-            //TEST PRINTERS
-            new Printer
-            {
-                Prn_name = "Pr1",
-                Pc_name = "PC",
-                Status = 1
-            },
-
-            new Printer
-            {
-                Prn_name = "Pr2",
-                Pc_name = "PC",
-                Status = 2
-            },
-
-            new Printer
-            {
-                Prn_name = "Pr1",
-                Pc_name = "PC",
-                Status = 3
-            }
-        };
-
+            db = new UserContext();
+        }
         // context.Configuration.AutoDetectChangesEnabled = false;
         // context.ChangeTracker.DetectChanges();
-        public int PrintersDataToDb()
+        UserContext db;
+        public void InitializeComponentsToDb()
         {
-            UserContext db = new UserContext();
-           // db.Printers.Add(allPrinters[1]);
-            var countPr = db.Printers.Count();
-            if (countPr != 0)
-                db.Database.ExecuteSqlCommand("TRUNCATE TABLE Printers"); //не может определить
-
-            allPrinters.ForEach(p => db.Printers.Add(p));
-            db.SaveChanges();
-            return 1;
+            Database.SetInitializer(new ContexInitializer());
+            db.Database.Initialize(true);
         }
 
+        public List<Printer> GetPrintersFromDb()
+        {
+            List<Printer> prs = db.Printers.ToList();
+            return prs;
+        }
+
+        public string Test()
+        {
+            Printer myPr = db.Printers.FirstOrDefault(p => p.Id == 3);
+            if (myPr != null)
+                return myPr.Prn_name;
+            else
+                return "NULL";
+        }
     }
 }

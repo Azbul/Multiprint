@@ -56,3 +56,8 @@ C:\Users\Adam\source\repos\WcfPrintService\WebPrint\obj\Debug\WebPrint.csproj.Co
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\obj\Debug\WebPrint.csproj.CopyComplete
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\obj\Debug\WebPrint.dll
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\obj\Debug\WebPrint.pdb
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\WcfPrintService.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\EntityFramework.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\WcfPrintService.pdb
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\WcfPrintService.dll.config
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\EntityFramework.xml

@@ -11,12 +11,14 @@
     <form id="form1" runat="server">
         <div>
             <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> <br/>
-            <asp:RadioButtonList ID="RadioButtonList1" runat="server" OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged">
-                <asp:ListItem Text="Принтер1" Value="1"></asp:ListItem> 
-                <asp:ListItem Text="Принтер2" Value="2"></asp:ListItem> 
-                <asp:ListItem Text="Принтер3" Value="3"></asp:ListItem> 
-            </asp:RadioButtonList>
-            <asp:Button ID="Button1" runat="server" Text="Обновить" OnClick="Button1_Click" /> <br/> <br/>
+            <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True">
+            </asp:DropDownList>
+            
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            
+            <asp:Button ID="Button1" runat="server" Text="Обновить" OnClick="Button1_Click" style="margin-bottom: 0px" /> 
+            <br />
+            <br/>
             <asp:Label ID="Label1" runat="server" Text="Изменить статус принтера"></asp:Label><br/>
             <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
             <br/>

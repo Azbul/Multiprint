@@ -9,17 +9,124 @@
 //------------------------------------------------------------------------------
 
 namespace WebPrint.ServiceReferenc2 {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Printer", Namespace="http://schemas.datacontract.org/2004/07/WcfPrintService")]
+    [System.SerializableAttribute()]
+    public partial class Printer : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Pc_nameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Prn_nameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int StatusField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Pc_name {
+            get {
+                return this.Pc_nameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Pc_nameField, value) != true)) {
+                    this.Pc_nameField = value;
+                    this.RaisePropertyChanged("Pc_name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Prn_name {
+            get {
+                return this.Prn_nameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Prn_nameField, value) != true)) {
+                    this.Prn_nameField = value;
+                    this.RaisePropertyChanged("Prn_name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Status {
+            get {
+                return this.StatusField;
+            }
+            set {
+                if ((this.StatusField.Equals(value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReferenc2.IService1")]
     public interface IService1 {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PrintersDataToDb", ReplyAction="http://tempuri.org/IService1/PrintersDataToDbResponse")]
-        int PrintersDataToDb();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializeComponentsToDb", ReplyAction="http://tempuri.org/IService1/InitializeComponentsToDbResponse")]
+        void InitializeComponentsToDb();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PrintersDataToDb", ReplyAction="http://tempuri.org/IService1/PrintersDataToDbResponse")]
-        System.Threading.Tasks.Task<int> PrintersDataToDbAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializeComponentsToDb", ReplyAction="http://tempuri.org/IService1/InitializeComponentsToDbResponse")]
+        System.Threading.Tasks.Task InitializeComponentsToDbAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrintersFromDb", ReplyAction="http://tempuri.org/IService1/GetPrintersFromDbResponse")]
+        WebPrint.ServiceReferenc2.Printer[] GetPrintersFromDb();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrintersFromDb", ReplyAction="http://tempuri.org/IService1/GetPrintersFromDbResponse")]
+        System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Printer[]> GetPrintersFromDbAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Test", ReplyAction="http://tempuri.org/IService1/TestResponse")]
+        string Test();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Test", ReplyAction="http://tempuri.org/IService1/TestResponse")]
+        System.Threading.Tasks.Task<string> TestAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -49,12 +156,28 @@ namespace WebPrint.ServiceReferenc2 {
                 base(binding, remoteAddress) {
         }
         
-        public int PrintersDataToDb() {
-            return base.Channel.PrintersDataToDb();
+        public void InitializeComponentsToDb() {
+            base.Channel.InitializeComponentsToDb();
         }
         
-        public System.Threading.Tasks.Task<int> PrintersDataToDbAsync() {
-            return base.Channel.PrintersDataToDbAsync();
+        public System.Threading.Tasks.Task InitializeComponentsToDbAsync() {
+            return base.Channel.InitializeComponentsToDbAsync();
+        }
+        
+        public WebPrint.ServiceReferenc2.Printer[] GetPrintersFromDb() {
+            return base.Channel.GetPrintersFromDb();
+        }
+        
+        public System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Printer[]> GetPrintersFromDbAsync() {
+            return base.Channel.GetPrintersFromDbAsync();
+        }
+        
+        public string Test() {
+            return base.Channel.Test();
+        }
+        
+        public System.Threading.Tasks.Task<string> TestAsync() {
+            return base.Channel.TestAsync();
         }
     }
 }
