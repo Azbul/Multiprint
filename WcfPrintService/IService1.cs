@@ -19,9 +19,7 @@ namespace WcfPrintService
         [OperationContract]
         List<Printer> GetPrintersFromDb();
 
-        [OperationContract]
-        string Test();
-
+       
     }
 
 }

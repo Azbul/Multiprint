@@ -11,7 +11,7 @@
     <form id="form1" runat="server">
         <div>
             <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> <br/>
-            <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True">
+            <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
             </asp:DropDownList>
             
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

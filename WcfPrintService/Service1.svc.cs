@@ -34,13 +34,5 @@ namespace WcfPrintService
             return prs;
         }
 
-        public string Test()
-        {
-            Printer myPr = db.Printers.FirstOrDefault(p => p.Id == 3);
-            if (myPr != null)
-                return myPr.Prn_name;
-            else
-                return "NULL";
-        }
     }
 }

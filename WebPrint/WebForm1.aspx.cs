@@ -16,13 +16,13 @@ namespace WebPrint
         protected void Page_Load(object sender, EventArgs e)
         {
             client = new ServiceReferenc2.Service1Client();
-            client.InitializeComponentsToDb();
-            Label1.Text = client.Test();
+            client.InitializeComponentsToDb(); // Возможно следует применить Task myTask = new Task(client.InitializeComponentsToDb()); myTask.Wait(); 
             FillUI();
         }
 
         private void FillUI()
         {
+            DropDownList1.Items.Clear();
             var printerts = client.GetPrintersFromDb();
             foreach (var pr in printerts)
             {
@@ -33,17 +33,12 @@ namespace WebPrint
         protected void Button1_Click(object sender, EventArgs e)
         {
             //Label1.Text = RadioButtonList1.Items[0].Text;
-            
+
         }
 
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-        }
-
-        protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
+            Label1.Text = DropDownList1.SelectedValue;
         }
     }
 }
