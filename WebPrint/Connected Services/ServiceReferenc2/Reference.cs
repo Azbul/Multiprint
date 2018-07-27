@@ -106,15 +106,204 @@ namespace WebPrint.ServiceReferenc2 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Pqueue", Namespace="http://schemas.datacontract.org/2004/07/WcfPrintService")]
+    [System.SerializableAttribute()]
+    public partial class Pqueue : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> FileStatusField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FilenameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PageFromField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PageToField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> PapersPrintingField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PcNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PrintPagesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> PrintedConfirmField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int PrinterIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> FileStatus {
+            get {
+                return this.FileStatusField;
+            }
+            set {
+                if ((this.FileStatusField.Equals(value) != true)) {
+                    this.FileStatusField = value;
+                    this.RaisePropertyChanged("FileStatus");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Filename {
+            get {
+                return this.FilenameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FilenameField, value) != true)) {
+                    this.FilenameField = value;
+                    this.RaisePropertyChanged("Filename");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PageFrom {
+            get {
+                return this.PageFromField;
+            }
+            set {
+                if ((this.PageFromField.Equals(value) != true)) {
+                    this.PageFromField = value;
+                    this.RaisePropertyChanged("PageFrom");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PageTo {
+            get {
+                return this.PageToField;
+            }
+            set {
+                if ((this.PageToField.Equals(value) != true)) {
+                    this.PageToField = value;
+                    this.RaisePropertyChanged("PageTo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> PapersPrinting {
+            get {
+                return this.PapersPrintingField;
+            }
+            set {
+                if ((this.PapersPrintingField.Equals(value) != true)) {
+                    this.PapersPrintingField = value;
+                    this.RaisePropertyChanged("PapersPrinting");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string PcName {
+            get {
+                return this.PcNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PcNameField, value) != true)) {
+                    this.PcNameField = value;
+                    this.RaisePropertyChanged("PcName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string PrintPages {
+            get {
+                return this.PrintPagesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PrintPagesField, value) != true)) {
+                    this.PrintPagesField = value;
+                    this.RaisePropertyChanged("PrintPages");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> PrintedConfirm {
+            get {
+                return this.PrintedConfirmField;
+            }
+            set {
+                if ((this.PrintedConfirmField.Equals(value) != true)) {
+                    this.PrintedConfirmField = value;
+                    this.RaisePropertyChanged("PrintedConfirm");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PrinterId {
+            get {
+                return this.PrinterIdField;
+            }
+            set {
+                if ((this.PrinterIdField.Equals(value) != true)) {
+                    this.PrinterIdField = value;
+                    this.RaisePropertyChanged("PrinterId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReferenc2.IService1")]
     public interface IService1 {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializeComponentsToDb", ReplyAction="http://tempuri.org/IService1/InitializeComponentsToDbResponse")]
-        void InitializeComponentsToDb();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializePrintersToDb", ReplyAction="http://tempuri.org/IService1/InitializePrintersToDbResponse")]
+        void InitializePrintersToDb();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializeComponentsToDb", ReplyAction="http://tempuri.org/IService1/InitializeComponentsToDbResponse")]
-        System.Threading.Tasks.Task InitializeComponentsToDbAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializePrintersToDb", ReplyAction="http://tempuri.org/IService1/InitializePrintersToDbResponse")]
+        System.Threading.Tasks.Task InitializePrintersToDbAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrintersFromDb", ReplyAction="http://tempuri.org/IService1/GetPrintersFromDbResponse")]
         WebPrint.ServiceReferenc2.Printer[] GetPrintersFromDb();
@@ -122,11 +311,11 @@ namespace WebPrint.ServiceReferenc2 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPrintersFromDb", ReplyAction="http://tempuri.org/IService1/GetPrintersFromDbResponse")]
         System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Printer[]> GetPrintersFromDbAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Test", ReplyAction="http://tempuri.org/IService1/TestResponse")]
-        string Test();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SetQueueDataToDb", ReplyAction="http://tempuri.org/IService1/SetQueueDataToDbResponse")]
+        void SetQueueDataToDb(WebPrint.ServiceReferenc2.Pqueue pqueue);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Test", ReplyAction="http://tempuri.org/IService1/TestResponse")]
-        System.Threading.Tasks.Task<string> TestAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SetQueueDataToDb", ReplyAction="http://tempuri.org/IService1/SetQueueDataToDbResponse")]
+        System.Threading.Tasks.Task SetQueueDataToDbAsync(WebPrint.ServiceReferenc2.Pqueue pqueue);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -156,12 +345,12 @@ namespace WebPrint.ServiceReferenc2 {
                 base(binding, remoteAddress) {
         }
         
-        public void InitializeComponentsToDb() {
-            base.Channel.InitializeComponentsToDb();
+        public void InitializePrintersToDb() {
+            base.Channel.InitializePrintersToDb();
         }
         
-        public System.Threading.Tasks.Task InitializeComponentsToDbAsync() {
-            return base.Channel.InitializeComponentsToDbAsync();
+        public System.Threading.Tasks.Task InitializePrintersToDbAsync() {
+            return base.Channel.InitializePrintersToDbAsync();
         }
         
         public WebPrint.ServiceReferenc2.Printer[] GetPrintersFromDb() {
@@ -172,12 +361,12 @@ namespace WebPrint.ServiceReferenc2 {
             return base.Channel.GetPrintersFromDbAsync();
         }
         
-        public string Test() {
-            return base.Channel.Test();
+        public void SetQueueDataToDb(WebPrint.ServiceReferenc2.Pqueue pqueue) {
+            base.Channel.SetQueueDataToDb(pqueue);
         }
         
-        public System.Threading.Tasks.Task<string> TestAsync() {
-            return base.Channel.TestAsync();
+        public System.Threading.Tasks.Task SetQueueDataToDbAsync(WebPrint.ServiceReferenc2.Pqueue pqueue) {
+            return base.Channel.SetQueueDataToDbAsync(pqueue);
         }
     }
 }

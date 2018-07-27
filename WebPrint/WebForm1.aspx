@@ -10,23 +10,36 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> <br/>
-            <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
-            </asp:DropDownList>
-            
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            
-            <asp:Button ID="Button1" runat="server" Text="Обновить" OnClick="Button1_Click" style="margin-bottom: 0px" /> 
+            <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> &nbsp;&nbsp;&nbsp;
             <br />
             <br/>
-            <asp:Label ID="Label1" runat="server" Text="Изменить статус принтера"></asp:Label><br/>
+            <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" AutoPostBack="True">
+            </asp:DropDownList>
+            
+            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<asp:Label ID="Label1" runat="server" Text="Состояние:"></asp:Label>
+            &nbsp;<asp:Label ID="Label3" runat="server" Text="Не подключен"></asp:Label> 
+            <br />
+            <br />
+            <hr />
+            &nbsp;&nbsp;
+            <asp:Label ID="Label4" runat="server" Text="Диапазон:"></asp:Label>
+            <br />
+            
+            <asp:RadioButtonList ID="RadioButtonList1" runat="server">
+                <asp:ListItem Selected="True" Text ="Все" Value="1" />
+                <asp:ListItem Text ="Страницы:" Value="2" />
+            </asp:RadioButtonList>
+            
             <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <br />
             <br/>
+            <input id="ipFilename" type="file" accept="application/pdf" name="ipFilename" runat="server"/>
         </div>
+        
         <p>
-            &nbsp;</p>
-        <p>
-            &nbsp;</p>
+            <asp:Button ID="Button1" runat="server" Text="ПЕЧАТЬ" OnClick="Button1_Click1" />
+        </p>
+        
     </form>
 </body>
 </html>

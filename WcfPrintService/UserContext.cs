@@ -10,10 +10,11 @@ namespace WcfPrintService
     {
         public UserContext() 
             : base("UserDB")
-        {
-
-        }
+        { }
+        
 
         public DbSet<Printer> Printers { get; set; }
+
+        public DbSet<Pqueue> Pqueues { get; set; }
     }
 }

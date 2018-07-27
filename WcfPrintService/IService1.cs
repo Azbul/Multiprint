@@ -14,11 +14,13 @@ namespace WcfPrintService
     {
 
         [OperationContract]
-        void InitializeComponentsToDb();
+        void InitializePrintersToDb();
 
         [OperationContract]
         List<Printer> GetPrintersFromDb();
 
+        [OperationContract]
+        void SetQueueDataToDb(Pqueue pqueue);
        
     }
 

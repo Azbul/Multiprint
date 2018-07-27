@@ -10,35 +10,64 @@ namespace WebPrint
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-
         ServiceReferenc2.Service1Client client;
 
-        protected void Page_Load(object sender, EventArgs e)
+
+        public WebForm1()
         {
             client = new ServiceReferenc2.Service1Client();
-            client.InitializeComponentsToDb(); // Возможно следует применить Task myTask = new Task(client.InitializeComponentsToDb()); myTask.Wait(); 
-            FillUI();
+            //GlobalVariables.Loaded = false;   
+        }
+        
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if(!GlobalVariables.Loaded)
+                FillUI();
+            GlobalVariables.Loaded = true;
         }
 
         private void FillUI()
         {
-            DropDownList1.Items.Clear();
-            var printerts = client.GetPrintersFromDb();
-            foreach (var pr in printerts)
+            client.InitializePrintersToDb(); // Возможно следует применять Task myTask = new Task(client.InitializePrintersToDb()); myTask.Wait(); 
+            //DropDownList1.Items.Clear();
+            GlobalVariables.Printers = client.GetPrintersFromDb(); //сделай глобальным, чтобы получить доступ ко всем данным и работать с dropdownlist 
+            foreach (var pr in GlobalVariables.Printers)
             {
                 DropDownList1.Items.Add(new ListItem(pr.Prn_name, pr.Id.ToString()));
             }
         }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
             //Label1.Text = RadioButtonList1.Items[0].Text;
-
-        }
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Label1.Text = DropDownList1.SelectedValue;
+            Label3.Text = DropDownList1.SelectedValue; //сбрасывается выбранный файл- поправить в extJs
+            
         }
+
+        protected void Button1_Click1(object sender, EventArgs e)
+        {
+            client.SetQueueDataToDb(new ServiceReferenc2.Pqueue
+            {     //поля должны заполнятся данными из интерфейса!
+                PageFrom = 1,
+
+                PageTo = 13,
+
+                PrintPages = "13",
+
+                PrinterId = Convert.ToInt32(DropDownList1.SelectedValue),
+
+                Filename = ipFilename.PostedFile.FileName,
+
+                FileStatus = 1,
+
+                PapersPrinting = 5,
+
+                PrintedConfirm = 0,
+
+                PcName = GlobalVariables.Printers[Convert.ToInt32(DropDownList1.SelectedValue) - 1].Pc_name
+            });
+        }
+
+        
     }
 }

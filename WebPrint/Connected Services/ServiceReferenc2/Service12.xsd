@@ -15,4 +15,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Printer" nillable="true" type="tns:Printer" />
+  <xs:complexType name="Pqueue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FileStatus" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Filename" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="PageFrom" type="xs:int" />
+      <xs:element minOccurs="0" name="PageTo" type="xs:int" />
+      <xs:element minOccurs="0" name="PapersPrinting" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="PcName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PrintPages" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PrintedConfirm" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="PrinterId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Pqueue" nillable="true" type="tns:Pqueue" />
 </xs:schema>
