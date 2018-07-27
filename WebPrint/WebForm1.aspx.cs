@@ -66,8 +66,10 @@ namespace WebPrint
 
                 PcName = GlobalVariables.Printers[Convert.ToInt32(DropDownList1.SelectedValue) - 1].Pc_name
             });
+
+            //Здесь же метод dbQueueData to QueueUI, или сразу для QueueUI берем эти (выше) данные. Возможно при каждой обновлении страницы следует выгружать в QueueUI данные 
         }
 
-        
+
     }
 }
