@@ -34,9 +34,9 @@
             <br />
             <br/>
             <input id="ipFilename" type="file" accept="application/pdf" name="ipFilename" runat="server"/>
-            <br>
+            <br />
                 <asp:Button ID="Button1" runat="server" Text="ПЕЧАТЬ" OnClick="Button1_Click1" />
-            </br>
+            
             <hr />
               <asp:GridView ID="GridView1" runat="server" Height="138px" Width="1039px">
                   <EmptyDataTemplate>Записей нет!</EmptyDataTemplate>
@@ -48,6 +48,13 @@
 	ConnectionString="<%$ ConnectionStrings:UserDB %>"
             SelectCommand="SELECT Filename, FileStatus, PrinterId, PrintPages, PcName FROM Pqueues"/>
       -->
+        
+
+        
+        
+        <p>
+                <asp:Button ID="Button2" runat="server" Text="ОБНОВИТЬ" OnClick="Button1_Click2" Height="54px" Width="102px" />
+            </p>
         
 
         
