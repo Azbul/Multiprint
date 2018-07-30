@@ -34,9 +34,30 @@ namespace WebPrint
             foreach (var pr in GlobalVariables.Printers)
             {
                 DropDownList1.Items.Add(new ListItem(pr.Prn_name, pr.Id.ToString()));
+                
             }
         }
-            //Label1.Text = RadioButtonList1.Items[0].Text;
+
+        private void FillPqueueUI()
+        {
+            GridView1.AutoGenerateColumns = true;
+            GlobalVariables.Pqueues = client.GetPqueuesFromDb();
+            
+           var pqlist = from p in GlobalVariables.Pqueues where p.PrintedConfirm == 1 select new
+           {
+               DocName = p.Filename,
+               FileStatus = p.FileStatus,
+               PrintName = p.PrinterId, PageToPrint = p.PrintPages,
+               PC_Name = p.PcName,
+               DateAndTime = p.PqueueDateTime
+           };
+           
+            GridView1.DataSource = pqlist.ToList();
+            GridView1.DataBind();
+        }
+
+
+        //Label1.Text = RadioButtonList1.Items[0].Text;
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -62,14 +83,20 @@ namespace WebPrint
 
                 PapersPrinting = 5,
 
-                PrintedConfirm = 0,
+                PrintedConfirm = 1,
 
-                PcName = GlobalVariables.Printers[Convert.ToInt32(DropDownList1.SelectedValue) - 1].Pc_name
+                PcName = GlobalVariables.Printers[Convert.ToInt32(DropDownList1.SelectedValue) - 1].Pc_name,
+
+                PqueueDateTime = DateTime.Now.ToString()
             });
 
             //Здесь же метод dbQueueData to QueueUI, или сразу для QueueUI берем эти (выше) данные. Возможно при каждой обновлении страницы следует выгружать в QueueUI данные 
+            FillPqueueUI();
         }
 
+        protected void SqlDataSource1_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
+        {
 
+        }
     }
 }

@@ -34,11 +34,23 @@
             <br />
             <br/>
             <input id="ipFilename" type="file" accept="application/pdf" name="ipFilename" runat="server"/>
-        </div>
+            <br>
+                <asp:Button ID="Button1" runat="server" Text="ПЕЧАТЬ" OnClick="Button1_Click1" />
+            </br>
+            <hr />
+              <asp:GridView ID="GridView1" runat="server" Height="138px" Width="1039px">
+                  <EmptyDataTemplate>Записей нет!</EmptyDataTemplate>
+        </asp:GridView>
         
-        <p>
-            <asp:Button ID="Button1" runat="server" Text="ПЕЧАТЬ" OnClick="Button1_Click1" />
-        </p>
+         </div>
+      
+       <!-- <asp:SqlDataSource ID="SqlDataSource3" runat="server" ProviderName="Npgsql" 
+	ConnectionString="<%$ ConnectionStrings:UserDB %>"
+            SelectCommand="SELECT Filename, FileStatus, PrinterId, PrintPages, PcName FROM Pqueues"/>
+      -->
+        
+
+        
         
     </form>
 </body>

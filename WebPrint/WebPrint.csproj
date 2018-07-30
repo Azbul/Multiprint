@@ -83,6 +83,9 @@
     <Content Include="Connected Services\ServiceReferenc2\WebPrint.ServiceReferenc2.Printer.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Connected Services\ServiceReferenc2\WebPrint.ServiceReferenc2.Pqueue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Connected Services\ServiceReference\Service1.disco" />
     <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\ServiceReference\configuration.svcinfo" />

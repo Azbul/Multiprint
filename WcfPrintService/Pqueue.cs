@@ -26,5 +26,7 @@ namespace WcfPrintService
         public int? PrintedConfirm { get; set; }
 
         public string PcName { get; set; }
+
+        public string PqueueDateTime { get; set; }
     }
 }

@@ -35,4 +35,16 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetPqueuesFromDb">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPqueuesFromDbResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfPrintService" minOccurs="0" name="GetPqueuesFromDbResult" nillable="true" type="q3:ArrayOfPqueue" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

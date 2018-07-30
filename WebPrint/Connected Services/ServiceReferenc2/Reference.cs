@@ -137,6 +137,9 @@ namespace WebPrint.ServiceReferenc2 {
         private string PcNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string PqueueDateTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PrintPagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -247,6 +250,19 @@ namespace WebPrint.ServiceReferenc2 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string PqueueDateTime {
+            get {
+                return this.PqueueDateTimeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PqueueDateTimeField, value) != true)) {
+                    this.PqueueDateTimeField = value;
+                    this.RaisePropertyChanged("PqueueDateTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string PrintPages {
             get {
                 return this.PrintPagesField;
@@ -316,6 +332,12 @@ namespace WebPrint.ServiceReferenc2 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SetQueueDataToDb", ReplyAction="http://tempuri.org/IService1/SetQueueDataToDbResponse")]
         System.Threading.Tasks.Task SetQueueDataToDbAsync(WebPrint.ServiceReferenc2.Pqueue pqueue);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPqueuesFromDb", ReplyAction="http://tempuri.org/IService1/GetPqueuesFromDbResponse")]
+        WebPrint.ServiceReferenc2.Pqueue[] GetPqueuesFromDb();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPqueuesFromDb", ReplyAction="http://tempuri.org/IService1/GetPqueuesFromDbResponse")]
+        System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Pqueue[]> GetPqueuesFromDbAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -367,6 +389,14 @@ namespace WebPrint.ServiceReferenc2 {
         
         public System.Threading.Tasks.Task SetQueueDataToDbAsync(WebPrint.ServiceReferenc2.Pqueue pqueue) {
             return base.Channel.SetQueueDataToDbAsync(pqueue);
+        }
+        
+        public WebPrint.ServiceReferenc2.Pqueue[] GetPqueuesFromDb() {
+            return base.Channel.GetPqueuesFromDb();
+        }
+        
+        public System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Pqueue[]> GetPqueuesFromDbAsync() {
+            return base.Channel.GetPqueuesFromDbAsync();
         }
     }
 }

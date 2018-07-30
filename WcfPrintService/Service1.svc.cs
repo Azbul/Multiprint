@@ -11,8 +11,6 @@ using System.Data.Entity;
 
 namespace WcfPrintService
 {
-    // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "Service1" в коде, SVC-файле и файле конфигурации.
-    // ПРИМЕЧАНИЕ. Чтобы запустить клиент проверки WCF для тестирования службы, выберите элементы Service1.svc или Service1.svc.cs в обозревателе решений и начните отладку.
     public class Service1 : IService1
     {
         public Service1()
@@ -27,7 +25,7 @@ namespace WcfPrintService
 
         public void InitializePrintersToDb()
         {
-            /*Database.SetInitializer(new ContexInitializer());
+           /* Database.SetInitializer(new ContexInitializer());
             db.Database.Initialize(true); */
             
             #region PrintersAPI
@@ -56,8 +54,8 @@ namespace WcfPrintService
                 }
             };
             #endregion
-
-           var countPr = db.Printers.Count();
+            
+            var countPr = db.Printers.Count();
             if (countPr != 0)
                 db.Printers.RemoveRange(db.Printers);
 
@@ -65,7 +63,17 @@ namespace WcfPrintService
             db.SaveChanges();
             db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Printers_Id_seq"" RESTART");
             db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Printers"" SET ""Id"" = DEFAULT");
+        }
 
+        public void SetQueueDataToDb(Pqueue pqueue)
+        {
+            // db.Pqueues.RemoveRange(db.Pqueues); //clear it
+
+            db.Pqueues.Add(pqueue);
+            db.SaveChanges();
+
+            /*db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Pqueues_Id_seq"" RESTART");
+            db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Pqueues"" SET ""Id"" = DEFAULT");*/
         }
 
 
@@ -75,18 +83,13 @@ namespace WcfPrintService
             return prs;
         }
 
-
-        public void SetQueueDataToDb(Pqueue pqueue)
+        public List<Pqueue> GetPqueuesFromDb()
         {
-           // db.Pqueues.RemoveRange(db.Pqueues); //clear it
-
-            db.Pqueues.Add(pqueue);
-            db.SaveChanges();
-
-            /*db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Pqueues_Id_seq"" RESTART");
-            db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Pqueues"" SET ""Id"" = DEFAULT");*/
-
+            List<Pqueue> pqs = db.Pqueues.ToList();
+            return pqs;
         }
+
+        
 
     }
 }

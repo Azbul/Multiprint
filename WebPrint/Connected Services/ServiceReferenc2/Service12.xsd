@@ -24,10 +24,17 @@
       <xs:element minOccurs="0" name="PageTo" type="xs:int" />
       <xs:element minOccurs="0" name="PapersPrinting" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="PcName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PqueueDateTime" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="PrintPages" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="PrintedConfirm" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="PrinterId" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Pqueue" nillable="true" type="tns:Pqueue" />
+  <xs:complexType name="ArrayOfPqueue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Pqueue" nillable="true" type="tns:Pqueue" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPqueue" nillable="true" type="tns:ArrayOfPqueue" />
 </xs:schema>

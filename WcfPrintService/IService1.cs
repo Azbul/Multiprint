@@ -21,6 +21,9 @@ namespace WcfPrintService
 
         [OperationContract]
         void SetQueueDataToDb(Pqueue pqueue);
+
+        [OperationContract]
+        List<Pqueue> GetPqueuesFromDb();
        
     }
 
