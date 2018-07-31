@@ -21,7 +21,7 @@ namespace WebPrint
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!GlobalVariables.Loaded)
+            if(!GlobalVariables.Loaded) //IsPostBack 
                 FillPrinterUI();
             GlobalVariables.Loaded = true;
             FillPqueueUI();

@@ -8,7 +8,31 @@
     <title></title>
 </head>
 <body>
+     <ext:ResourceManager runat="server" Theme="Gray" />
     <form id="form1" runat="server">
+        <ext:Panel 
+            ID="Window1"
+            runat="server" 
+            Title="Welcome to Ext.NET"
+            Height="215"
+            Width="350"
+            Frame="true"
+            Collapsible="true"
+            Cls="box"
+            BodyPadding="5"
+            DefaultButton="0"
+            Layout="AnchorLayout"
+            DefaultAnchor="100%">
+            <Items>
+                <ext:TextArea 
+                    ID="TextArea1" 
+                    runat="server" 
+                    EmptyText=">> Enter a Test Message Here <<"
+                    FieldLabel="Message" 
+                    Height="85" 
+                    />
+            </Items>
+        </ext:Panel>
         <div>
             <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> &nbsp;&nbsp;&nbsp;
             <br />
@@ -43,22 +67,13 @@
         </asp:GridView>
         
          </div>
-      
        <!-- <asp:SqlDataSource ID="SqlDataSource3" runat="server" ProviderName="Npgsql" 
 	ConnectionString="<%$ ConnectionStrings:UserDB %>"
             SelectCommand="SELECT Filename, FileStatus, PrinterId, PrintPages, PcName FROM Pqueues"/>
       -->
-        
-
-        
-        
-        <p>
+            <p>
                 <asp:Button ID="Button2" runat="server" Text="ОБНОВИТЬ" OnClick="Button1_Click2" Height="54px" Width="102px" />
             </p>
-        
-
-        
-        
     </form>
 </body>
 </html>

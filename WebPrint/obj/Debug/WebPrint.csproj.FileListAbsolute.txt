@@ -61,3 +61,13 @@ C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\EntityFramework.dll
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\WcfPrintService.pdb
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\WcfPrintService.dll.config
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\EntityFramework.xml
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Ext.Net.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Ext.Net.Utilities.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Newtonsoft.Json.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Transformer.NET.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\WebActivatorEx.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Ext.Net.xml
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Ext.Net.Utilities.xml
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Newtonsoft.Json.xml
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Transformer.NET.xml
