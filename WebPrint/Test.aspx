@@ -20,9 +20,10 @@
     <title>Ext.NET Example</title>
 </head>
 <body>
-    <ext:ResourceManager runat="server" Theme="Gray" />
+    <ext:ResourceManager runat="server" Theme="Triton" />
     
     <form runat="server">
+
         <ext:Panel 
             ID="Window1"
             runat="server" 
@@ -30,7 +31,7 @@
             Height="215"
             Width="350"
             Frame="true"
-            Collapsible="true"
+            Align="Center"
             Cls="box"
             BodyPadding="5"
             DefaultButton="0"
@@ -50,7 +51,7 @@
                     ID="Button1"
                     runat="server" 
                     Text="Submit"
-                    Icon="Accept" 
+                    Icon="PrinterEmpty" 
                     OnDirectClick="Button1_Click" 
                     />
             </Buttons>

@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="WebPrint.WebForm1" %>
 
+<%@ Register assembly="Ext.Net" namespace="Ext.Net" tagprefix="ext" %>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -8,8 +11,11 @@
     <title></title>
 </head>
 <body>
-     <ext:ResourceManager runat="server" Theme="Gray" />
+    
+    
+    <ext:ResourceManager runat="server" Theme="Triton" />
     <form id="form1" runat="server">
+    
         <ext:Panel 
             ID="Window1"
             runat="server" 
@@ -17,7 +23,7 @@
             Height="215"
             Width="350"
             Frame="true"
-            Collapsible="true"
+            Align="Center"
             Cls="box"
             BodyPadding="5"
             DefaultButton="0"
@@ -32,7 +38,18 @@
                     Height="85" 
                     />
             </Items>
+            <Buttons>
+                <ext:Button 
+                    ID="Button3"
+                    runat="server" 
+                    Text="Submit"
+                    Icon="PrinterEmpty" 
+                    OnDirectClick="Button5_Click" 
+                    />
+            </Buttons>
         </ext:Panel>
+
+
         <div>
             <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> &nbsp;&nbsp;&nbsp;
             <br />

@@ -40,6 +40,15 @@ namespace WebPrint {
         protected global::Ext.Net.TextArea TextArea1;
         
         /// <summary>
+        /// Button3 элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::Ext.Net.Button Button3;
+        
+        /// <summary>
         /// Label2 элемент управления.
         /// </summary>
         /// <remarks>

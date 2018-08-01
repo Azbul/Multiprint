@@ -126,6 +126,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="PrintTest.aspx" />
     <Content Include="Test.aspx" />
     <Content Include="Ext.NET.Default.aspx" />
     <Content Include="WebForm1.aspx" />

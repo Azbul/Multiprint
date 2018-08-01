@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Ext.Net;  //------ добавь это для ext
 
 
 namespace WebPrint
@@ -11,7 +12,7 @@ namespace WebPrint
     public partial class WebForm1 : System.Web.UI.Page
     {
         ServiceReferenc2.Service1Client client;
-
+        
 
         public WebForm1()
         {
@@ -34,7 +35,7 @@ namespace WebPrint
             GlobalVariables.Printers = client.GetPrintersFromDb(); //сделай глобальным, чтобы получить доступ ко всем данным и работать с dropdownlist 
             foreach (var pr in GlobalVariables.Printers)
             {
-                DropDownList1.Items.Add(new ListItem(pr.Prn_name, pr.Id.ToString()));
+                DropDownList1.Items.Add(new System.Web.UI.WebControls.ListItem(pr.Prn_name, pr.Id.ToString()));
                 
             }
         }
@@ -94,12 +95,24 @@ namespace WebPrint
             // или сразу для QueueUI берем эти (выше) данные. Возможно при каждой обновлении страницы следует выгружать в QueueUI данные 
         }
 
-        protected void Button1_Click2(object sender, EventArgs e)
+        protected void Button1_Click2(object sender, EventArgs e) //update 
         {
             DropDownList1.Items.Clear();
             FillPrinterUI();
 
             FillPqueueUI();
+        }
+
+
+        //EXT.NET
+        protected void Button5_Click(object sender, DirectEventArgs e)
+        {
+            X.Msg.Notify(new NotificationConfig
+            {
+                Icon = Icon.Accept,
+                Title = "Working",
+                Html = this.TextArea1.Text
+            }).Show();
         }
     }
 }
