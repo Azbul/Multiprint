@@ -1,61 +1,114 @@
 ﻿<%@ Page Language="C#" %>
 
-<%@ Register assembly="Ext.Net" namespace="Ext.Net" tagprefix="ext" %>
+<%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
-<script runat="server">
-    protected void Button1_Click(object sender, DirectEventArgs e)
-    {
-        X.Msg.Notify(new NotificationConfig { 
-            Icon  = Icon.Accept,
-            Title = "Working",
-            Html  = this.TextArea1.Text
-        }).Show();
-    }
-</script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>Combobox Example</title>
+    <script runat="server">
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            var data = new[] {                
+                new { State = "Alabama", StateProvinceID = 1 },
+                new { State = "California", StateProvinceID = 2 },
+                new { State = "Ohio", StateProvinceID = 3 },
+            };
 
-<!DOCTYPE html>
-    
-<html>
-<head runat="server">
-    <title>Ext.NET Example</title>
+
+            storeStates.DataSource = data;
+            storeStates.DataBind();
+        }
+
+
+        protected void cbState_OnSelect(object sender, DirectEventArgs e)
+        {
+            X.Msg.Alert("Message From Code-Behind", cbState.SelectedItem.Text + " selected!").Show();
+        }
+    </script>
 </head>
 <body>
-    <ext:ResourceManager runat="server" Theme="Triton" />
-    
-    <form runat="server">
+    <form id="form1" runat="server">        
+        <ext:ResourceManager ID="ResourceManager1" runat="server" />
 
-        <ext:Panel 
-            ID="Window1"
-            runat="server" 
-            Title="Welcome to Ext.NET"
-            Height="215"
-            Width="350"
-            Frame="true"
-            Align="Center"
-            Cls="box"
-            BodyPadding="5"
-            DefaultButton="0"
-            Layout="AnchorLayout"
-            DefaultAnchor="100%">
+
+        <ext:Store ID="storeStates" runat="server">
+            <Model>                
+                <ext:Model ID="model1" runat="server" IDProperty="StateProvinceID">
+                    <Fields>
+                        <ext:ModelField Name="State" Type="String" />
+                        <ext:ModelField Name="StateProvinceID" Type="Int" />                        
+                    </Fields>
+                </ext:Model>
+            </Model>
+        </ext:Store>
+
+
+        <ext:FormPanel runat="server" ID="FormPanel1" Width="300" Height="60" PageX="50" PageY="50" BodyPadding="15">
             <Items>
-                <ext:TextArea 
-                    ID="TextArea1" 
-                    runat="server" 
-                    EmptyText=">> Enter a Test Message Here <<"
-                    FieldLabel="Message" 
-                    Height="85" 
-                    />
+                <ext:ComboBox runat="server" ID="cbState" FieldLabel="State" DisplayField="State" 
+                              ValueField="StateProvinceID" StoreID="storeStates" Anchor="100%" QueryMode="Local">
+                    <DirectEvents>
+                        <Select OnEvent="cbState_OnSelect" />
+                    </DirectEvents>
+                </ext:ComboBox>
             </Items>
-            <Buttons>
-                <ext:Button 
-                    ID="Button1"
-                    runat="server" 
-                    Text="Submit"
-                    Icon="PrinterEmpty" 
-                    OnDirectClick="Button1_Click" 
-                    />
-            </Buttons>
-        </ext:Panel>
+        </ext:FormPanel>        
     </form>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

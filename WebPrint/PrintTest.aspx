@@ -1,23 +1,51 @@
 ﻿<%@ Page Language="C#" %>
 
 <script runat="server">
+
+    WebPrint.ServiceReferenc2.Service1Client cl;
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        WebPrint.ServiceReferenc2.Service1Client cl = new WebPrint.ServiceReferenc2.Service1Client();
-        var objs = new List<object>() ;
-        for (int i = 0; i < 2; i++)
-        {
-            objs.Add(new object[] { "Id",cl.GetPrintersFromDb()[0].Status, "Status", "printing..." });            //get data from db to client (request IsPostBack)
-            
-                /* 
-                 * {new object[] { "Id", "Printer1", "Status", "ready"},
-                 new object[] { "Id", "Printer2", "Status", "no connection"},
-                new object[] { WebPrint.GlobalVariables.Printers[i].Id, WebPrint.GlobalVariables.Printers[i].Prn_name, "Status", "printing..."}
-                };*/
-        }
-        this.Store1.DataSource = objs;
-     //   this.Store1.DataBind();
+        cl = new WebPrint.ServiceReferenc2.Service1Client(); //т.к. клиентов несколько, client.InitializePrintersToDb() вызывать в отдельной логике
+        FillPrinterUI();
+        
     }
+
+
+    void FillPrinterUI()
+    {
+        cl.InitializePrintersToDb();
+        var prs = cl.GetPrintersFromDb();
+        var objs = new List<object>() ;
+
+        for (int i = 0; i < prs.Count(); i++)
+        {
+            objs.Add(new  { pid = prs[i].Id, prname = prs[i].Prn_name, pcname = prs[i].Pc_name, status = prs[i].Status });            //get data from db to client (request IsPostBack)
+        }
+
+        this.Store1.DataSource = objs;
+        this.Store1.DataBind();
+    }
+
+    void SetStatusText()
+    {
+        this.StatusField.Text = ComboBox1.SelectedItem.Value;  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
+    }
+
+    protected void Btnp_Click(object sender, DirectEventArgs e)
+    {
+        SetStatusText();
+    }
+
+    /*
+                           <SelectedItems>
+                               <ext:ListItem Value="2" (or Index="n") Mode="Raw" />
+                           </SelectedItems>
+
+                           <Listeners>
+                               <Select Handler="#{StatusField}.setValue(#{ComboBox1}.store.getAt(1).get('price')));" />
+                           </Listeners>
+    */
 </script>
 
 
@@ -45,15 +73,25 @@
             color:#222;
         }
     </style>
-
 </head>
 <body>
-
+    <form id="form1" runat="server"> 
     <ext:ResourceManager runat="server" />
     
-
+    <ext:Store ID="Store1" runat="server">
+        <Model>
+            <ext:Model ID="model1" runat="server" IDProperty="pid">
+                <Fields>
+                    <ext:ModelField Name="pid" Type="Int"/>
+                    <ext:ModelField Name="prname" Type="String"/>
+                    <ext:ModelField Name="pcname" Type="String"/>
+                    <ext:ModelField Name="status" Type="String"/>
+                </Fields>
+            </ext:Model>
+        </Model>
+    </ext:Store>
+             
     <ext:Viewport runat="server">
-        
         <Items>
            <ext:Panel 
             ID="Window1"
@@ -83,45 +121,36 @@
 
                             <Items>
                                 <ext:ComboBox
+                                ID="ComboBox1"
                                 runat="server"
                                 Width="500"
                                 Editable="false"
-                                DisplayField="state"
-                                ValueField="abbr"
+                                DisplayField="prname"
+                                ValueField="status"
                                 QueryMode="Local"
                                 ForceSelection="true"
                                 TriggerAction="All"
                                 Icon="PrinterEmpty"
+                                StoreID="Store1"
                                 EmptyText="Выберите принтер...">
 
-                                <Store>
-                                    <ext:Store ID="Store1" runat="server">
-                                        <Model>
-                                            <ext:Model runat="server">
-                                                <Fields>
-                                                    <ext:ModelField Name="abbr" />
-                                                    <ext:ModelField Name="state" />
-                                                    <ext:ModelField Name="nick" />
-                                                    <ext:ModelField Name="price" />
-                                                </Fields>
-                                            </ext:Model>
-                                        </Model>
-                                    </ext:Store>
-                                </Store>
                                 <ListConfig>
                                     <ItemTpl runat="server">
                                         <Html>
                                             <div class="list-item">
-                                                    <h3>{state}</h3>
-                                                    {nick:ellipsis(30)}: {price:ellipsis(50)}
+                                                <h3>{prname}</h3>
+                                                Состояние: {status:ellipsis(50)}
                                             </div>
                                         </Html>
                                     </ItemTpl>
                                 </ListConfig>
-                            </ext:ComboBox>
-                                 
-                                <ext:TextField
-                            ID="CompanyField"
+                                <DirectEvents>
+                                    <Select OnEvent="Btnp_Click" />
+                                </DirectEvents>
+                             </ext:ComboBox>
+
+                            <ext:TextField
+                            ID="StatusField"
                             runat="server"
                             Name="company"
                             ReadOnly="true"
@@ -159,12 +188,13 @@
                     runat="server" 
                     Text="Печать"
                     Icon="Printer" 
-                  
+                    OnDirectClick="Btnp_Click"
                     />
             </Buttons>
                             
         </ext:Panel>
         </Items>
     </ext:Viewport>
+ </form>
 </body>
 </html>
