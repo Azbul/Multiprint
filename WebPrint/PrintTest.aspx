@@ -8,22 +8,47 @@
     {
         cl = new WebPrint.ServiceReferenc2.Service1Client(); //т.к. клиентов несколько, client.InitializePrintersToDb() вызывать в отдельной логике
         FillPrinterUI();
-        
+        FillPqueueUI();
+
+
     }
 
+    void FillPqueueUI()
+    {
+        var pqs = cl.GetPqueuesFromDb();
+        var pqObjs = new List<object>();
+
+        for (int i = 0; i<pqs.Count(); i++)
+        {
+            pqObjs.Add(new { docname = pqs[i].Filename,
+
+                filestatus = pqs[i].FileStatus,
+
+                prname = pqs[i].PrinterId,
+
+                pagetoprint = pqs[i].PapersPrinting,
+
+                pcname = pqs[i].PcName,
+
+                datetime = pqs[i].PqueueDateTime});
+        }
+
+        this.Store2.DataSource = pqObjs;
+        this.Store2.DataBind();
+    }
 
     void FillPrinterUI()
     {
         cl.InitializePrintersToDb();
         var prs = cl.GetPrintersFromDb();
-        var objs = new List<object>() ;
+        var PrObjs = new List<object>() ;
 
         for (int i = 0; i < prs.Count(); i++)
         {
-            objs.Add(new  { pid = prs[i].Id, prname = prs[i].Prn_name, pcname = prs[i].Pc_name, status = prs[i].Status });            //get data from db to client (request IsPostBack)
+            PrObjs.Add(new  { pid = prs[i].Id, prname = prs[i].Prn_name, pcname = prs[i].Pc_name, status = prs[i].Status });            //get data from db to client (request IsPostBack)
         }
 
-        this.Store1.DataSource = objs;
+        this.Store1.DataSource = PrObjs;
         this.Store1.DataBind();
     }
 
@@ -32,9 +57,36 @@
         this.StatusField.Text = ComboBox1.SelectedItem.Value;  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
     }
 
-    protected void Btnp_Click(object sender, DirectEventArgs e)
+    protected void OnComboBoxSelected(object sender, DirectEventArgs e)
     {
         SetStatusText();
+    }
+
+    protected void Print_Click(object sender, DirectEventArgs e)
+    {
+        cl.SetQueueDataToDb(new WebPrint.ServiceReferenc2.Pqueue
+            {     //поля должны заполнятся данными из интерфейса!
+                PageFrom = 1, //docFirstPage
+
+                PageTo = 13,  //lastP
+
+                PrintPages = "13",  //userPages
+
+               // PrinterId = Convert.ToInt32(ComboBox1.GetStore().GetAt(0).Store.,
+
+                Filename = ipFilename.PostedFile.FileName,
+
+                FileStatus = 1, //???   ----------------------
+                //                                            |
+                PapersPrinting = 5,  //realtime update ?      |
+                //                                            |
+                PrintedConfirm = 1, // -----------------------
+
+                PcName = GlobalVariables.Printers[Convert.ToInt32(DropDownList1.SelectedValue) - 1].Pc_name,
+
+                PqueueDateTime = DateTime.Now.ToString()
+            });
+            FillPqueueUI();
     }
 
     /*
@@ -76,8 +128,9 @@
 </head>
 <body>
     <form id="form1" runat="server"> 
-    <ext:ResourceManager runat="server" />
+    <ext:ResourceManager runat="server" Theme="Triton"/>
     
+            
     <ext:Store ID="Store1" runat="server">
         <Model>
             <ext:Model ID="model1" runat="server" IDProperty="pid">
@@ -145,7 +198,7 @@
                                     </ItemTpl>
                                 </ListConfig>
                                 <DirectEvents>
-                                    <Select OnEvent="Btnp_Click" />
+                                    <Select OnEvent="OnComboBoxSelected" />
                                 </DirectEvents>
                              </ext:ComboBox>
 
@@ -188,13 +241,111 @@
                     runat="server" 
                     Text="Печать"
                     Icon="Printer" 
-                    OnDirectClick="Btnp_Click"
+                    OnDirectClick="Print_Click"
                     />
             </Buttons>
                             
         </ext:Panel>
         </Items>
     </ext:Viewport>
+       
+    <ext:Window
+    runat="server"
+    Title="Документы на очередь"
+    Width="800"
+    Height="400"
+    MinWidth="300"
+    MinHeight="200"
+    X="610"
+    Y="0"
+    Closable="false"
+    Layout="FitLayout"
+    >
+         
+        <Items>
+        <ext:GridPanel
+        ID="GridPanel1"
+        runat="server"
+        ForceFit="true"
+        Width="800" 
+        Height="400">
+        <Store>
+            <ext:Store ID="Store2" runat="server">
+                <Model>
+                    <ext:Model runat="server">
+                        <Fields>
+                            <ext:ModelField Name="docname" Type="Auto"/>
+                            <ext:ModelField Name="filestatus" Type="Float" />
+                            <ext:ModelField Name="prname" Type="Int" />
+                            <ext:ModelField Name="pagetoprint" Type="Int" />
+                            <ext:ModelField Name="pcname" Type="Auto" />
+                            <ext:ModelField Name="datetime" Type="String"/>
+                        </Fields>
+                    </ext:Model>
+                </Model>
+            </ext:Store>
+        </Store>
+        <ColumnModel runat="server">
+            <Columns>
+                <ext:Column
+                    ID="DocColumn"
+                    runat="server"
+                    Text="Документ"
+                    Width="110"
+                    DataIndex="docname"
+                   
+                    />
+
+                <ext:Column
+                    ID="StatusColumn"
+                    runat="server"
+                    Text="Статус файла"
+                    Width="110"
+                    DataIndex="filestatus"
+                        />
+
+                <ext:Column                                                          
+                    ID="PrnameColumn"                                                
+                    runat="server"                                                   
+                    Text="Принтер"                                                   
+                    Width="75"                                                       
+                    DataIndex="prname"                                               
+                    />
+
+                <ext:Column
+                    ID="PageToPrintColumn"
+                    runat="server"
+                    Text="Страницы на печать"
+                    Width="70"
+                    DataIndex="pagetoprint"
+                    
+                    />
+
+                <ext:Column
+                    ID="PcnameColumn"
+                    runat="server"
+                    Text="Компьютер"
+                    Width="80"
+                    DataIndex="pcname"
+                    />
+
+                <ext:Column
+                    ID="DateTimeColumn"
+                    runat="server"
+                    Text="Поставлено в очередь"
+                    Width="130"
+                    DataIndex="datetime"
+                    />
+            </Columns>
+
+        </ColumnModel>
+        <View>
+            <ext:GridView runat="server" StripeRows="true" TrackOver="true" />
+        </View>
+        </ext:GridPanel>
+    </Items>
+ </ext:Window>
+        
  </form>
 </body>
 </html>

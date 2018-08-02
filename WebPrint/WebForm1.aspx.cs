@@ -71,7 +71,7 @@ namespace WebPrint
         {
             client.SetQueueDataToDb(new ServiceReferenc2.Pqueue
             {     //поля должны заполнятся данными из интерфейса!
-                PageFrom = 1, //docFirstyPage
+                PageFrom = 1, //docFirstPage
 
                 PageTo = 13,  //lastP
 

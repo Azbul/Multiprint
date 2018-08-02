@@ -1,61 +1,147 @@
 ﻿<%@ Page Language="C#" %>
-
+  
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server">
-    <title>Combobox Example</title>
-    <script runat="server">
-        protected void Page_Load(object sender, EventArgs e)
+ 
+<script runat="server">
+    public class Test
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
+    }
+ 
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!X.IsAjaxRequest)
         {
-            var data = new[] {                
-                new { State = "Alabama", StateProvinceID = 1 },
-                new { State = "California", StateProvinceID = 2 },
-                new { State = "Ohio", StateProvinceID = 3 },
+            Store store = this.MultiSelect1.GetStore();
+            store.DataSource = new object[] 
+            { 
+                new Test()
+                {
+                    Value = "1",
+                    Text = "Item 1"   
+                },
+                new Test()
+                {
+                    Value = "2",
+                    Text = "Item 2"   
+                },
+                new Test()
+                {
+                    Value = "3",
+                    Text = "Item 3"   
+                }
             };
-
-
-            storeStates.DataSource = data;
-            storeStates.DataBind();
         }
+    }
+ 
+    protected void Submit(object sender, DirectEventArgs e)
+    {
+        Test selectedItem = JSON.Deserialize<Test>(e.ExtraParams["data"]);
 
+        X.Msg.Alert("Submit", selectedItem.Text).Show();
+    }
+</script>
+ 
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Ext.NET v2 Example</title>
 
-        protected void cbState_OnSelect(object sender, DirectEventArgs e)
-        {
-            X.Msg.Alert("Message From Code-Behind", cbState.SelectedItem.Text + " selected!").Show();
-        }
+    <script>
+        var getSelectedData = function () {
+            var s = App.MultiSelect1.getSelected();
+            
+            if (s.length > 0) {
+                s = s[0].data;
+            } 
+
+            return Ext.encode(s);
+        };
     </script>
 </head>
 <body>
-    <form id="form1" runat="server">        
-        <ext:ResourceManager ID="ResourceManager1" runat="server" />
-
-
-        <ext:Store ID="storeStates" runat="server">
-            <Model>                
-                <ext:Model ID="model1" runat="server" IDProperty="StateProvinceID">
-                    <Fields>
-                        <ext:ModelField Name="State" Type="String" />
-                        <ext:ModelField Name="StateProvinceID" Type="Int" />                        
-                    </Fields>
-                </ext:Model>
-            </Model>
-        </ext:Store>
-
-
-        <ext:FormPanel runat="server" ID="FormPanel1" Width="300" Height="60" PageX="50" PageY="50" BodyPadding="15">
-            <Items>
-                <ext:ComboBox runat="server" ID="cbState" FieldLabel="State" DisplayField="State" 
-                              ValueField="StateProvinceID" StoreID="storeStates" Anchor="100%" QueryMode="Local">
-                    <DirectEvents>
-                        <Select OnEvent="cbState_OnSelect" />
-                    </DirectEvents>
-                </ext:ComboBox>
-            </Items>
-        </ext:FormPanel>        
+    <form runat="server">
+        <ext:ResourceManager runat="server" />
+        <ext:MultiSelect
+            ID="MultiSelect1"
+            runat="server"
+            ValueField="Value"
+            DisplayField="Text"
+            SingleSelect="true">
+            <Store>
+                <ext:Store runat="server">
+                    <Model>
+                        <ext:Model runat="server">
+                            <Fields>
+                                <ext:ModelField Name="Value" />
+                                <ext:ModelField Name="Text" />
+                            </Fields>
+                        </ext:Model>
+                    </Model>
+                </ext:Store>
+            </Store>
+        </ext:MultiSelect>
+ 
+        <ext:Button runat="server" Text="Submit">
+            <DirectEvents>
+                <Click OnEvent="Submit" Before="return App.MultiSelect1.getSelected().length > 0;">
+                    <ExtraParams>
+                        <ext:Parameter
+                            Name="data"
+                            Value="getSelectedData()"
+                            Mode="Raw" />
+                    </ExtraParams>
+                </Click>
+            </DirectEvents>
+        </ext:Button>
     </form>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
