@@ -67,6 +67,15 @@ namespace WebPrint {
         protected global::Ext.Net.TextField StatusField;
         
         /// <summary>
+        /// PcNameField элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::Ext.Net.TextField PcNameField;
+        
+        /// <summary>
         /// TextField2 элемент управления.
         /// </summary>
         /// <remarks>

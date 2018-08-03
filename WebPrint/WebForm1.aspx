@@ -80,7 +80,7 @@
                                 Width="500"
                                 Editable="false"
                                 DisplayField="prname"
-                                ValueField="status"
+                                ValueField="pid"
                                 QueryMode="Local"
                                 ForceSelection="true"
                                 TriggerAction="All"
@@ -92,7 +92,7 @@
                                     <ItemTpl runat="server">
                                         <Html>
                                             <div class="list-item">
-                                                <h3>{prname}</h3>
+                                                <h3>{prname} </h3>
                                                 Состояние: {status:ellipsis(50)}
                                             </div>
                                         </Html>
@@ -106,9 +106,19 @@
                             <ext:TextField
                             ID="StatusField"
                             runat="server"
-                            Name="company"
+                            Name="sfield"
                             ReadOnly="true"
                             FieldLabel="Состояние"
+                            Width="260"
+                            EmptyText="Неизвестно"
+                            />
+
+                            <ext:TextField
+                            ID="PcNameField"
+                            runat="server"
+                            Name="pcname"
+                            ReadOnly="true"
+                            FieldLabel="Компьютер"
                             Width="260"
                             EmptyText="Неизвестно"
                             />

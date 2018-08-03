@@ -23,31 +23,31 @@ namespace WebPrint
             {
                 FillPrinterUI(); //try add in comboboxselected
                 FillPqueueUI();  //только в методе print_click?
-                X.Msg.Alert("Title", "message").Show();
+                X.Msg.Alert("Инфо", "Load completed").Show();
             }
         }
 
         void FillPqueueUI()
         {
-            WebPrint.GlobalVariables.Pqueues = cl.GetPqueuesFromDb();
-            int globalVarPqueueCount = WebPrint.GlobalVariables.Pqueues.Count();
+            GlobalVariables.Pqueues = cl.GetPqueuesFromDb();
+            int globalVarPqueueCount = GlobalVariables.Pqueues.Count();
             var pqObjs = new List<object>();
 
             for (int i = 0; i < globalVarPqueueCount; i++)
             {
                 pqObjs.Add(new
                 {
-                    docname = WebPrint.GlobalVariables.Pqueues[i].Filename,
+                    docname = GlobalVariables.Pqueues[i].Filename,
 
-                    filestatus = WebPrint.GlobalVariables.Pqueues[i].FileStatus,
+                    filestatus = GlobalVariables.Pqueues[i].FileStatus,
 
-                    prname = WebPrint.GlobalVariables.Pqueues[i].PrinterId,
+                    prname = GlobalVariables.Pqueues[i].PrinterId,
 
-                    pagetoprint = WebPrint.GlobalVariables.Pqueues[i].PapersPrinting,
+                    pagetoprint = GlobalVariables.Pqueues[i].PapersPrinting,
 
-                    pcname = WebPrint.GlobalVariables.Pqueues[i].PcName,
+                    pcname = GlobalVariables.Pqueues[i].PcName,
 
-                    datetime = WebPrint.GlobalVariables.Pqueues[i].PqueueDateTime
+                    datetime = GlobalVariables.Pqueues[i].PqueueDateTime
                 });
             }
 
@@ -58,21 +58,21 @@ namespace WebPrint
         void FillPrinterUI()
         {
             cl.InitializePrintersToDb();
-            WebPrint.GlobalVariables.Printers = cl.GetPrintersFromDb();
-            var globalVarPrintCount = WebPrint.GlobalVariables.Printers.Count();
+            GlobalVariables.Printers = cl.GetPrintersFromDb();
+            var globalVarPrintCount = GlobalVariables.Printers.Count();
             var PrObjs = new List<object>();
 
             for (int i = 0; i < globalVarPrintCount; i++)
             {
                 PrObjs.Add(new
                 {
-                    pid = WebPrint.GlobalVariables.Printers[i].Id,
+                    pid = GlobalVariables.Printers[i].Id,
 
-                    prname = WebPrint.GlobalVariables.Printers[i].Prn_name,
+                    prname = GlobalVariables.Printers[i].Prn_name,
 
-                    pcname = WebPrint.GlobalVariables.Printers[i].Pc_name,
+                    pcname = GlobalVariables.Printers[i].Pc_name,
 
-                    status = WebPrint.GlobalVariables.Printers[i].Status
+                    status = GlobalVariables.Printers[i].Status
                 });            //get data from db to client (request IsPostBack)
             }
 
@@ -82,17 +82,18 @@ namespace WebPrint
 
         void SetStatusText()
         {
-            this.StatusField.Text = ComboBox1.SelectedItem.Value;  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
+            this.StatusField.Text = (GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
         }
 
         protected void OnComboBoxSelected(object sender, DirectEventArgs e)
         {
             SetStatusText();
+            this.PcNameField.Text = (GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(this.ComboBox1.SelectedItem.Value))).Pc_name;
         }
 
         protected void Print_Click(object sender, DirectEventArgs e)
         {
-            cl.SetQueueDataToDb(new WebPrint.ServiceReferenc2.Pqueue
+            cl.SetQueueDataToDb(new ServiceReferenc2.Pqueue
             {     //поля должны заполнятся данными из интерфейса!
                 PageFrom = 1, //docFirstPage
 
@@ -100,7 +101,7 @@ namespace WebPrint
 
                 PrintPages = "7",  //userPages
 
-                PrinterId = (WebPrint.GlobalVariables.Printers.First(p => p.Prn_name == this.ComboBox1.SelectedItem.Text)).Id,
+                PrinterId = Convert.ToInt32(this.ComboBox1.SelectedItem.Value),
 
                 Filename = this.UploadField.PostedFile.FileName,
 
@@ -110,7 +111,7 @@ namespace WebPrint
 
                 PrintedConfirm = 0, // -----------------------
 
-                PcName = (WebPrint.GlobalVariables.Printers.First(p => p.Prn_name == this.ComboBox1.SelectedItem.Text)).Pc_name, //сделать поле в окне принт и брать оттуда
+                PcName = this.PcNameField.Text, //сделать поле в окне принт и брать оттуда
 
                 PqueueDateTime = DateTime.Now.ToString()
             });

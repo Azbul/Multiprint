@@ -13,7 +13,7 @@
         {
             FillPrinterUI(); //try add in comboboxselected
             FillPqueueUI();  //только в методе print_click?
-            X.Msg.Alert("Title", "message").Show();
+            X.Msg.Info("Инфо", "Первая загрузка").Show();
         }
 
     }
@@ -69,12 +69,14 @@
 
     void SetStatusText()
     {
-        this.StatusField.Text = ComboBox1.SelectedItem.Value;  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
+            this.StatusField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
     }
 
     protected void OnComboBoxSelected(object sender, DirectEventArgs e)
     {
         SetStatusText();
+        this.PcNameField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(this.ComboBox1.SelectedItem.Value))).Pc_name;
+
     }
 
     protected void Print_Click(object sender, DirectEventArgs e)
@@ -87,7 +89,7 @@
 
             PrintPages = "7",  //userPages
 
-            PrinterId = (WebPrint.GlobalVariables.Printers.First(p => p.Prn_name == this.ComboBox1.SelectedItem.Text)).Id,
+            PrinterId = Convert.ToInt32(this.ComboBox1.SelectedItem.Value),
 
             Filename = this.UploadField.PostedFile.FileName,
 
@@ -97,7 +99,7 @@
 
             PrintedConfirm = 0, // -----------------------
 
-            PcName = (WebPrint.GlobalVariables.Printers.First(p => p.Prn_name == this.ComboBox1.SelectedItem.Text)).Pc_name, //сделать поле в окне принт и брать оттуда
+            PcName = this.PcNameField.Text, //сделать поле в окне принт и брать оттуда
 
             PqueueDateTime = DateTime.Now.ToString()
         });
@@ -199,7 +201,7 @@
                                 Width="500"
                                 Editable="false"
                                 DisplayField="prname"
-                                ValueField="status"
+                                ValueField="pid"
                                 QueryMode="Local"
                                 ForceSelection="true"
                                 TriggerAction="All"
@@ -225,9 +227,19 @@
                             <ext:TextField
                             ID="StatusField"
                             runat="server"
-                            Name="company"
+                            Name="st"
                             ReadOnly="true"
                             FieldLabel="Состояние"
+                            Width="260"
+                            EmptyText="Неизвестно"
+                            />
+
+                            <ext:TextField
+                            ID="PcNameField"
+                            runat="server"
+                            Name="pcname"
+                            ReadOnly="true"
+                            FieldLabel="Компьютер"
                             Width="260"
                             EmptyText="Неизвестно"
                             />
