@@ -2,95 +2,251 @@
 
 <%@ Register assembly="Ext.Net" namespace="Ext.Net" tagprefix="ext" %>
 
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>Contact Form - Ext.NET Examples</title>
+    <link href="/resources/css/examples.css" rel="stylesheet" />
+    <style>
+        .list-item {
+            font:normal 11px tahoma, arial, helvetica, sans-serif;
+            padding:3px 10px 3px 10px;
+            border:1px solid #fff;
+            border-bottom:1px solid #eeeeee;
+            white-space:normal;
+            color:#555;
+        }
+
+        .list-item h3 {
+            display:block;
+            font:inherit;
+            font-weight:bold;
+            margin:0px;
+            color:#222;
+        }
+    </style>
 </head>
 <body>
+    <form id="form1" runat="server"> 
+    <ext:ResourceManager runat="server" Theme="Triton"/>
     
-    
-    <ext:ResourceManager runat="server" Theme="Triton" />
-    <form id="form1" runat="server">
-    
-        <ext:Panel 
+            
+    <ext:Store ID="Store1" runat="server">
+        <Model>
+            <ext:Model ID="model1" runat="server" IDProperty="pid">
+                <Fields>
+                    <ext:ModelField Name="pid" Type="Int"/>
+                    <ext:ModelField Name="prname" Type="String"/>
+                    <ext:ModelField Name="pcname" Type="String"/>
+                    <ext:ModelField Name="status" Type="String"/>
+                </Fields>
+            </ext:Model>
+        </Model>
+    </ext:Store>
+             
+    <ext:Viewport runat="server">
+        <Items>
+           <ext:Panel 
             ID="Window1"
             runat="server" 
-            Title="Welcome to Ext.NET"
-            Height="215"
-            Width="350"
+            Title="Печать"
+            Height="500"
+            Width="600"
             Frame="true"
-            Align="Center"
+            Align="Start"
+            Draggable="true"
             Cls="box"
             BodyPadding="5"
             DefaultButton="0"
             Layout="AnchorLayout"
+            Icon="Printer"
             DefaultAnchor="100%">
             <Items>
-                <ext:TextArea 
-                    ID="TextArea1" 
-                    runat="server" 
-                    EmptyText=">> Enter a Test Message Here <<"
-                    FieldLabel="Message" 
-                    Height="85" 
-                    />
+                 <ext:Container runat="server" Layout="HBoxLayout" MarginSpec="0 0 10">
+                    <Items>
+                        <ext:FieldSet
+                            runat="server"
+                            Flex="1"
+                            Title="Выбрать принтер"
+                            Layout="AnchorLayout"
+                            Height="200"
+                            DefaultAnchor="100%">
+
+                            <Items>
+                                <ext:ComboBox
+                                ID="ComboBox1"
+                                runat="server"
+                                Width="500"
+                                Editable="false"
+                                DisplayField="prname"
+                                ValueField="status"
+                                QueryMode="Local"
+                                ForceSelection="true"
+                                TriggerAction="All"
+                                Icon="PrinterEmpty"
+                                StoreID="Store1"
+                                EmptyText="Выберите принтер...">
+
+                                <ListConfig>
+                                    <ItemTpl runat="server">
+                                        <Html>
+                                            <div class="list-item">
+                                                <h3>{prname}</h3>
+                                                Состояние: {status:ellipsis(50)}
+                                            </div>
+                                        </Html>
+                                    </ItemTpl>
+                                </ListConfig>
+                                <DirectEvents>
+                                    <Select OnEvent="OnComboBoxSelected" />
+                                </DirectEvents>
+                             </ext:ComboBox>
+
+                            <ext:TextField
+                            ID="StatusField"
+                            runat="server"
+                            Name="company"
+                            ReadOnly="true"
+                            FieldLabel="Состояние"
+                            Width="260"
+                            EmptyText="Неизвестно"
+                            />
+                            </Items>
+                        </ext:FieldSet>
+
+                        <ext:Component runat="server" Width="10" />
+
+                        <ext:FieldSet
+                            runat="server"
+                            Flex="1"
+                            Title="Диапазон страниц"
+                            Height="200"
+                            Layout="AnchorLayout"
+                            DefaultAnchor="100%">
+
+                            <Items>
+                                <ext:Radio runat="server" BoxLabel="Все" InputValue="All" Name="fav-color" Checked="true" />
+                                <ext:Radio runat="server" BoxLabel="Страницы:" InputValue="Any" Name="fav-color" />
+                                <ext:TextField ID="TextField2" runat="server" MaskRe="/[0-9,-]/"/>
+                            </Items>
+                        </ext:FieldSet>
+                    </Items>
+                </ext:Container>
+                <ext:FileUploadField ID="UploadField" runat="server" Width="50" FieldLabel="Выбрать файл" EmptyText="Файл не выбран" Accept="application/pdf" Icon="Attach" />
+
             </Items>
             <Buttons>
                 <ext:Button 
-                    ID="Button3"
+                    ID="Button1"
                     runat="server" 
-                    Text="Submit"
-                    Icon="PrinterEmpty" 
-                    OnDirectClick="Button5_Click" 
+                    Text="Печать"
+                    Icon="Printer" 
+                    OnDirectClick="Print_Click"
                     />
             </Buttons>
+                            
         </ext:Panel>
+        </Items>
+    </ext:Viewport>
+       
+    <ext:Window
+    runat="server"
+    Title="Документы на очередь"
+    Width="800"
+    Height="400"
+    MinWidth="300"
+    MinHeight="200"
+    X="610"
+    Y="0"
+    Closable="false"
+    Layout="FitLayout"
+    >
+        <Items>
+        <ext:GridPanel
+        ID="GridPanel1"
+        runat="server"
+        ForceFit="true"
+        Width="800" 
+        Height="400">
+        <Store>
+            <ext:Store ID="Store2" runat="server">
+                <Model>
+                    <ext:Model runat="server">
+                        <Fields>
+                            <ext:ModelField Name="docname" Type="Auto"/>
+                            <ext:ModelField Name="filestatus" Type="Float" />
+                            <ext:ModelField Name="prname" Type="Int" />
+                            <ext:ModelField Name="pagetoprint" Type="Int" />
+                            <ext:ModelField Name="pcname" Type="Auto" />
+                            <ext:ModelField Name="datetime" Type="String"/>
+                        </Fields>
+                    </ext:Model>
+                </Model>
+            </ext:Store>
+        </Store>
+        <ColumnModel runat="server">
+            <Columns>
+                <ext:Column
+                    ID="DocColumn"
+                    runat="server"
+                    Text="Документ"
+                    Width="110"
+                    DataIndex="docname"
+                   
+                    />
 
+                <ext:Column
+                    ID="StatusColumn"
+                    runat="server"
+                    Text="Статус файла"
+                    Width="110"
+                    DataIndex="filestatus"
+                        />
 
-        <div>
-            <asp:Label ID="Label2" runat="server" Text="Выбрать принтер"></asp:Label> &nbsp;&nbsp;&nbsp;
-            <br />
-            <br/>
-            <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" AutoPostBack="True">
-            </asp:DropDownList>
-            
-            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<asp:Label ID="Label1" runat="server" Text="Состояние:"></asp:Label>
-            &nbsp;<asp:Label ID="Label3" runat="server" Text="Не подключен"></asp:Label> 
-            <br />
-            <br />
-            <hr />
-            &nbsp;&nbsp;
-            <asp:Label ID="Label4" runat="server" Text="Диапазон:"></asp:Label>
-            <br />
-            
-            <asp:RadioButtonList ID="RadioButtonList1" runat="server">
-                <asp:ListItem Selected="True" Text ="Все" Value="1" />
-                <asp:ListItem Text ="Страницы:" Value="2" />
-            </asp:RadioButtonList>
-            
-            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-            <br />
-            <br/>
-            <input id="ipFilename" type="file" accept="application/pdf" name="ipFilename" runat="server"/>
-            <br />
-                <asp:Button ID="Button1" runat="server" Text="ПЕЧАТЬ" OnClick="Button1_Click1" />
-            
-            <hr />
-              <asp:GridView ID="GridView1" runat="server" Height="138px" Width="1039px">
-                  <EmptyDataTemplate>Записей нет!</EmptyDataTemplate>
-        </asp:GridView>
+                <ext:Column                                                          
+                    ID="PrnameColumn"                                                
+                    runat="server"                                                   
+                    Text="Принтер"                                                   
+                    Width="75"                                                       
+                    DataIndex="prname"                                               
+                    />
+
+                <ext:Column
+                    ID="PageToPrintColumn"
+                    runat="server"
+                    Text="Страницы на печать"
+                    Width="70"
+                    DataIndex="pagetoprint"
+                    
+                    />
+
+                <ext:Column
+                    ID="PcnameColumn"
+                    runat="server"
+                    Text="Компьютер"
+                    Width="80"
+                    DataIndex="pcname"
+                    />
+
+                <ext:Column
+                    ID="DateTimeColumn"
+                    runat="server"
+                    Text="Поставлено в очередь"
+                    Width="130"
+                    DataIndex="datetime"
+                    />
+            </Columns>
+
+        </ColumnModel>
+        <View>
+            <ext:GridView runat="server" StripeRows="true" TrackOver="true" />
+        </View>
+        </ext:GridPanel>
+    </Items>
+ </ext:Window>
         
-         </div>
-       <!-- <asp:SqlDataSource ID="SqlDataSource3" runat="server" ProviderName="Npgsql" 
-	ConnectionString="<%$ ConnectionStrings:UserDB %>"
-            SelectCommand="SELECT Filename, FileStatus, PrinterId, PrintPages, PcName FROM Pqueues"/>
-      -->
-            <p>
-                <asp:Button ID="Button2" runat="server" Text="ОБНОВИТЬ" OnClick="Button1_Click2" Height="54px" Width="102px" />
-            </p>
-    </form>
+ </form>
 </body>
 </html>
+

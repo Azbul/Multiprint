@@ -67,13 +67,13 @@ namespace WcfPrintService
 
         public void SetQueueDataToDb(Pqueue pqueue)
         {
-            // db.Pqueues.RemoveRange(db.Pqueues); //clear it
+            //db.Pqueues.RemoveRange(db.Pqueues); //clear it
 
             db.Pqueues.Add(pqueue);
             db.SaveChanges();
 
-            /*db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Pqueues_Id_seq"" RESTART");
-            db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Pqueues"" SET ""Id"" = DEFAULT");*/
+            //db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Pqueues_Id_seq"" RESTART");
+            //db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Pqueues"" SET ""Id"" = DEFAULT");
         }
 
 

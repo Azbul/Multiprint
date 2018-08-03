@@ -2,35 +2,42 @@
 
 <script runat="server">
 
+
     WebPrint.ServiceReferenc2.Service1Client cl;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         cl = new WebPrint.ServiceReferenc2.Service1Client(); //т.к. клиентов несколько, client.InitializePrintersToDb() вызывать в отдельной логике
-        FillPrinterUI();
-        FillPqueueUI();
 
+        if (!X.IsAjaxRequest)
+        {
+            FillPrinterUI(); //try add in comboboxselected
+            FillPqueueUI();  //только в методе print_click?
+            X.Msg.Alert("Title", "message").Show();
+        }
 
     }
 
     void FillPqueueUI()
     {
-        var pqs = cl.GetPqueuesFromDb();
+        WebPrint.GlobalVariables.Pqueues = cl.GetPqueuesFromDb();
+        int globalVarPqueueCount = WebPrint.GlobalVariables.Pqueues.Count();
         var pqObjs = new List<object>();
 
-        for (int i = 0; i<pqs.Count(); i++)
+        for (int i = 0; i<globalVarPqueueCount; i++)
         {
-            pqObjs.Add(new { docname = pqs[i].Filename,
+            pqObjs.Add(new {
+                docname = WebPrint.GlobalVariables.Pqueues[i].Filename,
 
-                filestatus = pqs[i].FileStatus,
+                filestatus = WebPrint.GlobalVariables.Pqueues[i].FileStatus,
 
-                prname = pqs[i].PrinterId,
+                prname = WebPrint.GlobalVariables.Pqueues[i].PrinterId,
 
-                pagetoprint = pqs[i].PapersPrinting,
+                pagetoprint = WebPrint.GlobalVariables.Pqueues[i].PapersPrinting,
 
-                pcname = pqs[i].PcName,
+                pcname = WebPrint.GlobalVariables.Pqueues[i].PcName,
 
-                datetime = pqs[i].PqueueDateTime});
+                datetime = WebPrint.GlobalVariables.Pqueues[i].PqueueDateTime});
         }
 
         this.Store2.DataSource = pqObjs;
@@ -40,12 +47,20 @@
     void FillPrinterUI()
     {
         cl.InitializePrintersToDb();
-        var prs = cl.GetPrintersFromDb();
+        WebPrint.GlobalVariables.Printers = cl.GetPrintersFromDb();
+        var globalVarPrintCount = WebPrint.GlobalVariables.Printers.Count();
         var PrObjs = new List<object>() ;
 
-        for (int i = 0; i < prs.Count(); i++)
+        for (int i = 0; i < globalVarPrintCount; i++)
         {
-            PrObjs.Add(new  { pid = prs[i].Id, prname = prs[i].Prn_name, pcname = prs[i].Pc_name, status = prs[i].Status });            //get data from db to client (request IsPostBack)
+            PrObjs.Add(new  {
+                pid = WebPrint.GlobalVariables.Printers[i].Id,
+
+                prname = WebPrint.GlobalVariables.Printers[i].Prn_name,
+
+                pcname = WebPrint.GlobalVariables.Printers[i].Pc_name,
+
+                status = WebPrint.GlobalVariables.Printers[i].Status });            //get data from db to client (request IsPostBack)
         }
 
         this.Store1.DataSource = PrObjs;
@@ -65,29 +80,34 @@
     protected void Print_Click(object sender, DirectEventArgs e)
     {
         cl.SetQueueDataToDb(new WebPrint.ServiceReferenc2.Pqueue
-            {     //поля должны заполнятся данными из интерфейса!
-                PageFrom = 1, //docFirstPage
+        {     //поля должны заполнятся данными из интерфейса!
+            PageFrom = 1, //docFirstPage
 
-                PageTo = 13,  //lastP
+            PageTo = 7,  //lastP
 
-                PrintPages = "13",  //userPages
+            PrintPages = "7",  //userPages
 
-               // PrinterId = Convert.ToInt32(ComboBox1.GetStore().GetAt(0).Store.,
+            PrinterId = (WebPrint.GlobalVariables.Printers.First(p => p.Prn_name == this.ComboBox1.SelectedItem.Text)).Id,
 
-                Filename = ipFilename.PostedFile.FileName,
+            Filename = this.UploadField.PostedFile.FileName,
 
-                FileStatus = 1, //???   ----------------------
-                //                                            |
-                PapersPrinting = 5,  //realtime update ?      |
-                //                                            |
-                PrintedConfirm = 1, // -----------------------
+            FileStatus = 1, //???   ----------------------
 
-                PcName = GlobalVariables.Printers[Convert.ToInt32(DropDownList1.SelectedValue) - 1].Pc_name,
+            PapersPrinting = 0,  //realtime update ?      |
 
-                PqueueDateTime = DateTime.Now.ToString()
-            });
-            FillPqueueUI();
+            PrintedConfirm = 0, // -----------------------
+
+            PcName = (WebPrint.GlobalVariables.Printers.First(p => p.Prn_name == this.ComboBox1.SelectedItem.Text)).Pc_name, //сделать поле в окне принт и брать оттуда
+
+            PqueueDateTime = DateTime.Now.ToString()
+        });
+
+        //System.Threading.Thread.Sleep(10);
+
+        FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
     }
+
+
 
     /*
                            <SelectedItems>
@@ -232,7 +252,7 @@
                         </ext:FieldSet>
                     </Items>
                 </ext:Container>
-                <ext:FileUploadField ID="BasicField" runat="server" Width="50" FieldLabel="Выбрать файл" EmptyText="Файл не выбран" Accept="application/pdf" Icon="Attach" />
+                <ext:FileUploadField ID="UploadField" runat="server" Width="50" FieldLabel="Выбрать файл" EmptyText="Файл не выбран" Accept="application/pdf" Icon="Attach" />
 
             </Items>
             <Buttons>
@@ -261,7 +281,6 @@
     Closable="false"
     Layout="FitLayout"
     >
-         
         <Items>
         <ext:GridPanel
         ID="GridPanel1"
