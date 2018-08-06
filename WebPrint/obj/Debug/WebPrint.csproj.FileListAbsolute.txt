@@ -71,3 +71,5 @@ C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Ext.Net.xml
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Ext.Net.Utilities.xml
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Newtonsoft.Json.xml
 C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\Transformer.NET.xml
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\GemBox.Document.dll
+C:\Users\Adam\source\repos\WcfPrintService\WebPrint\bin\GemBox.Document.xml

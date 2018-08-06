@@ -14,13 +14,15 @@
             FillPrinterUI(); //try add in comboboxselected
             FillPqueueUI();  //только в методе print_click?
             X.Msg.Info("Инфо", "Первая загрузка").Show();
+            this.PcNameField.Text = "Client PC";
+
         }
 
     }
 
     void FillPqueueUI()
     {
-        WebPrint.GlobalVariables.Pqueues = cl.GetPqueuesFromDb();
+        WebPrint.GlobalVariables.Pqueues = cl.GetPqueuesFromDb(); ///get all
         int globalVarPqueueCount = WebPrint.GlobalVariables.Pqueues.Count();
         var pqObjs = new List<object>();
 
@@ -31,7 +33,7 @@
 
                 filestatus = WebPrint.GlobalVariables.Pqueues[i].FileStatus,
 
-                prname = WebPrint.GlobalVariables.Pqueues[i].PrinterId,
+                prname = WebPrint.GlobalVariables.Printers.First(p => p.Id == WebPrint.GlobalVariables.Pqueues[i].PrinterId).Prn_name   ,
 
                 pagetoprint = WebPrint.GlobalVariables.Pqueues[i].PapersPrinting,
 
@@ -75,8 +77,7 @@
     protected void OnComboBoxSelected(object sender, DirectEventArgs e)
     {
         SetStatusText();
-        this.PcNameField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(this.ComboBox1.SelectedItem.Value))).Pc_name;
-
+        
     }
 
     protected void Print_Click(object sender, DirectEventArgs e)
@@ -87,7 +88,7 @@
 
             PageTo = 7,  //lastP
 
-            PrintPages = "7",  //userPages
+            PrintPages = " 7",  //userPages or all
 
             PrinterId = Convert.ToInt32(this.ComboBox1.SelectedItem.Value),
 
@@ -307,7 +308,7 @@
                         <Fields>
                             <ext:ModelField Name="docname" Type="Auto"/>
                             <ext:ModelField Name="filestatus" Type="Float" />
-                            <ext:ModelField Name="prname" Type="Int" />
+                            <ext:ModelField Name="prname" Type="String" />
                             <ext:ModelField Name="pagetoprint" Type="Int" />
                             <ext:ModelField Name="pcname" Type="Auto" />
                             <ext:ModelField Name="datetime" Type="String"/>
