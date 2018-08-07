@@ -18,22 +18,25 @@ namespace WcfPrintService
                 {
                     Prn_name = "Prn1",
                     Pc_name = "PC",
-                    Status = 0
+                    Islocal = true,
+                    Status = "ok"
                 },
 
                 new Printer
                 {
                     Prn_name = "Prn2",
                     Pc_name = "PC",
-                    Status = 0
+                    Islocal = true,
+                    Status = "ok"
                 },
 
                 new Printer
                 {
                     Prn_name = "Prn3",
                     Pc_name = "PC",
-                    Status = 1
-                }
+                    Islocal = false,
+                    Status = "no connection"
+                },
             };
 
 

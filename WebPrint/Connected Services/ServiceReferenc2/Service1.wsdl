@@ -31,6 +31,12 @@
   <wsdl:message name="IService1_GetPqueuesFromDb_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetPqueuesFromDbResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_Print_InputMessage">
+    <wsdl:part name="parameters" element="tns:Print" />
+  </wsdl:message>
+  <wsdl:message name="IService1_Print_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PrintResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="InitializePrintersToDb">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/InitializePrintersToDb" message="tns:IService1_InitializePrintersToDb_InputMessage" />
@@ -47,6 +53,10 @@
     <wsdl:operation name="GetPqueuesFromDb">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetPqueuesFromDb" message="tns:IService1_GetPqueuesFromDb_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetPqueuesFromDbResponse" message="tns:IService1_GetPqueuesFromDb_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Print">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/Print" message="tns:IService1_Print_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/PrintResponse" message="tns:IService1_Print_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -80,6 +90,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetPqueuesFromDb">
       <soap:operation soapAction="http://tempuri.org/IService1/GetPqueuesFromDb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Print">
+      <soap:operation soapAction="http://tempuri.org/IService1/Print" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

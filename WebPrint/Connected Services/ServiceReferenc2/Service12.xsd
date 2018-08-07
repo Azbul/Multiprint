@@ -9,9 +9,10 @@
   <xs:complexType name="Printer">
     <xs:sequence>
       <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Islocal" type="xs:boolean" />
       <xs:element minOccurs="0" name="Pc_name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Prn_name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Status" type="xs:int" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Printer" nillable="true" type="tns:Printer" />

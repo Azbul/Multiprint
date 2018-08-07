@@ -25,42 +25,51 @@ namespace WcfPrintService
 
         public void InitializePrintersToDb()
         {
-           /* Database.SetInitializer(new ContexInitializer());
+           /*Database.SetInitializer(new ContexInitializer());
             db.Database.Initialize(true); */
             
-            #region PrintersAPI
+            #region TempPrintersAPI
+            /*
             List<Printer> allPrinters = new List<Printer>()
             {
                 //TEST PRINTERS
                 new Printer
                 {
                     Prn_name = "Prn1",
-                    Pc_name = "PC1",
-                    Status = 0
+                    Pc_name = "PC",
+                    Islocal = true,
+                    Status = "ok"
                 },
 
                 new Printer
                 {
                     Prn_name = "Prn2",
-                    Pc_name = "PC1",
-                    Status = 0
+                    Pc_name = "PC",
+                    Islocal = true,
+                    Status = "ok"
                 },
 
-                new Printer
+                 new Printer
                 {
                     Prn_name = "Prn3",
-                    Pc_name = "PC1",
-                    Status = 1
-                }
+                    Pc_name = "PC",
+                    Islocal = false,
+                    Status = "no connection"
+                },
             };
+            */
             #endregion
-            
+
+            //clear table
             var countPr = db.Printers.Count();
             if (countPr != 0)
                 db.Printers.RemoveRange(db.Printers);
 
-            allPrinters.ForEach(p => db.Printers.Add(p));
+           // allPrinters.ForEach(p => db.Printers.Add(p));
+            PrintersAPI.GetAllPrinters().ForEach(p => db.Printers.Add(p));
             db.SaveChanges();
+            //reset id
+
             db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Printers_Id_seq"" RESTART");
             db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Printers"" SET ""Id"" = DEFAULT");
         }
@@ -68,7 +77,7 @@ namespace WcfPrintService
         public void SetQueueDataToDb(Pqueue pqueue)
         {
             //db.Pqueues.RemoveRange(db.Pqueues); //clear it
-
+            
             db.Pqueues.Add(pqueue);
             db.SaveChanges();
 
@@ -87,6 +96,11 @@ namespace WcfPrintService
         {
             List<Pqueue> pqs = db.Pqueues.ToList();
             return pqs;
+        }
+
+        public void Print(string printerName)
+        {
+            PrintersAPI.Print(printerName);
         }
 
         

@@ -14,8 +14,6 @@
             FillPrinterUI(); //try add in comboboxselected
             FillPqueueUI();  //только в методе print_click?
             X.Msg.Info("Инфо", "Первая загрузка").Show();
-            this.PcNameField.Text = "Client PC";
-
         }
 
     }
@@ -51,10 +49,11 @@
         cl.InitializePrintersToDb();
         WebPrint.GlobalVariables.Printers = cl.GetPrintersFromDb();
         var globalVarPrintCount = WebPrint.GlobalVariables.Printers.Count();
+
         var PrObjs = new List<object>() ;
 
         for (int i = 0; i < globalVarPrintCount; i++)
-        {
+        {                       ////здесь проверка на локал и распределение
             PrObjs.Add(new  {
                 pid = WebPrint.GlobalVariables.Printers[i].Id,
 
@@ -77,7 +76,8 @@
     protected void OnComboBoxSelected(object sender, DirectEventArgs e)
     {
         SetStatusText();
-        
+        this.PcNameField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Pc_name;
+
     }
 
     protected void Print_Click(object sender, DirectEventArgs e)
@@ -108,6 +108,8 @@
         //System.Threading.Thread.Sleep(10);
 
         FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
+
+        cl.Print(this.ComboBox1.SelectedItem.Text);
     }
 
 

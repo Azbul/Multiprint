@@ -26,13 +26,16 @@ namespace WebPrint.ServiceReferenc2 {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IslocalField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string Pc_nameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string Prn_nameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int StatusField;
+        private string StatusField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -53,6 +56,19 @@ namespace WebPrint.ServiceReferenc2 {
                 if ((this.IdField.Equals(value) != true)) {
                     this.IdField = value;
                     this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Islocal {
+            get {
+                return this.IslocalField;
+            }
+            set {
+                if ((this.IslocalField.Equals(value) != true)) {
+                    this.IslocalField = value;
+                    this.RaisePropertyChanged("Islocal");
                 }
             }
         }
@@ -84,12 +100,12 @@ namespace WebPrint.ServiceReferenc2 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Status {
+        public string Status {
             get {
                 return this.StatusField;
             }
             set {
-                if ((this.StatusField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
                     this.StatusField = value;
                     this.RaisePropertyChanged("Status");
                 }
@@ -338,6 +354,12 @@ namespace WebPrint.ServiceReferenc2 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPqueuesFromDb", ReplyAction="http://tempuri.org/IService1/GetPqueuesFromDbResponse")]
         System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Pqueue[]> GetPqueuesFromDbAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Print", ReplyAction="http://tempuri.org/IService1/PrintResponse")]
+        void Print(string printerName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Print", ReplyAction="http://tempuri.org/IService1/PrintResponse")]
+        System.Threading.Tasks.Task PrintAsync(string printerName);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -397,6 +419,14 @@ namespace WebPrint.ServiceReferenc2 {
         
         public System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Pqueue[]> GetPqueuesFromDbAsync() {
             return base.Channel.GetPqueuesFromDbAsync();
+        }
+        
+        public void Print(string printerName) {
+            base.Channel.Print(printerName);
+        }
+        
+        public System.Threading.Tasks.Task PrintAsync(string printerName) {
+            return base.Channel.PrintAsync(printerName);
         }
     }
 }
