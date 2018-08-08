@@ -70,7 +70,7 @@
 
     void SetStatusText()
     {
-            this.StatusField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
+        this.StatusField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
     }
 
     protected void OnComboBoxSelected(object sender, DirectEventArgs e)
@@ -109,7 +109,13 @@
 
         FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
 
-        cl.Print(this.ComboBox1.SelectedItem.Text);
+        string splt = Server.MapPath(UploadField.PostedFile.FileName);
+        String[] elements = Regex.Split(splt, @"\\");
+        string pth = "";
+        foreach (var el in elements)
+            pth += el + @"\";
+
+        cl.Print(pth,  ComboBox1.SelectedItem.Text);  // ! клиент и сервис на одном сервере; иначе- отправлять потоком в сервис
     }
 
 

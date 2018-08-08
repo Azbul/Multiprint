@@ -66,7 +66,7 @@ namespace WcfPrintService
                 db.Printers.RemoveRange(db.Printers);
 
            // allPrinters.ForEach(p => db.Printers.Add(p));
-            PrintersAPI.GetAllPrinters().ForEach(p => db.Printers.Add(p));
+            SpirePrAPI.GetAllPrinters().ForEach(p => db.Printers.Add(p));
             db.SaveChanges();
             //reset id
 
@@ -98,9 +98,9 @@ namespace WcfPrintService
             return pqs;
         }
 
-        public void Print(string printerName)
+        public void Print(string fileOrPath, string printerName)
         {
-            PrintersAPI.Print(printerName);
+            SpirePrAPI.PrintAll(fileOrPath, printerName);
         }
 
         

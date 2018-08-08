@@ -4,25 +4,22 @@
 
 <script runat="server">
 
-    WebPrint.TestPriAPI testapi;
+    
     protected void Page_Load(object sender, EventArgs e)
     {
-        testapi = new WebPrint.TestPriAPI();
     }
 
     protected void Button1_Click(object sender, DirectEventArgs e)
     {
-        testapi.SetDoc(UploadField.PostedFile.FileName);
+        WebPrint.SpirePrAPI.Print();
     }
 
     protected void Button2_Click(object sender, DirectEventArgs e)
     {
-       TextField1.Text = testapi.PrintAll();
     }
 
     protected void Button3_Click(object sender, DirectEventArgs e)
     {
-        testapi.PrintFromTo();
     }
 </script>
 

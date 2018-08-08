@@ -26,7 +26,7 @@ namespace WcfPrintService
         List<Pqueue> GetPqueuesFromDb();
 
         [OperationContract]
-        void Print(string printerName);
+        void Print(string fileOrPath, string printerName);
        
     }
 
