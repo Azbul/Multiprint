@@ -331,6 +331,13 @@ namespace WebPrint.ServiceReferenc2 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReferenc2.IService1")]
     public interface IService1 {
         
+        // CODEGEN: Контракт генерации сообщений с именем упаковщика (FiledMetadata) сообщения FiledMetadata не соответствует значению по умолчанию (Upload).
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Upload", ReplyAction="http://tempuri.org/IService1/UploadResponse")]
+        WebPrint.ServiceReferenc2.ReturnValue Upload(WebPrint.ServiceReferenc2.FiledMetadata request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Upload", ReplyAction="http://tempuri.org/IService1/UploadResponse")]
+        System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.ReturnValue> UploadAsync(WebPrint.ServiceReferenc2.FiledMetadata request);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InitializePrintersToDb", ReplyAction="http://tempuri.org/IService1/InitializePrintersToDbResponse")]
         void InitializePrintersToDb();
         
@@ -362,6 +369,44 @@ namespace WebPrint.ServiceReferenc2 {
         System.Threading.Tasks.Task PrintAsync(string fileOrPath, string printerName);
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="FiledMetadata", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class FiledMetadata {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public string FileName;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public System.IO.Stream Stream;
+        
+        public FiledMetadata() {
+        }
+        
+        public FiledMetadata(string FileName, System.IO.Stream Stream) {
+            this.FileName = FileName;
+            this.Stream = Stream;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ReturnValue", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class ReturnValue {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public bool UploadSucceed;
+        
+        public ReturnValue() {
+        }
+        
+        public ReturnValue(bool UploadSucceed) {
+            this.UploadSucceed = UploadSucceed;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IService1Channel : WebPrint.ServiceReferenc2.IService1, System.ServiceModel.IClientChannel {
     }
@@ -387,6 +432,31 @@ namespace WebPrint.ServiceReferenc2 {
         
         public Service1Client(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        WebPrint.ServiceReferenc2.ReturnValue WebPrint.ServiceReferenc2.IService1.Upload(WebPrint.ServiceReferenc2.FiledMetadata request) {
+            return base.Channel.Upload(request);
+        }
+        
+        public bool Upload(string FileName, System.IO.Stream Stream) {
+            WebPrint.ServiceReferenc2.FiledMetadata inValue = new WebPrint.ServiceReferenc2.FiledMetadata();
+            inValue.FileName = FileName;
+            inValue.Stream = Stream;
+            WebPrint.ServiceReferenc2.ReturnValue retVal = ((WebPrint.ServiceReferenc2.IService1)(this)).Upload(inValue);
+            return retVal.UploadSucceed;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.ReturnValue> WebPrint.ServiceReferenc2.IService1.UploadAsync(WebPrint.ServiceReferenc2.FiledMetadata request) {
+            return base.Channel.UploadAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.ReturnValue> UploadAsync(string FileName, System.IO.Stream Stream) {
+            WebPrint.ServiceReferenc2.FiledMetadata inValue = new WebPrint.ServiceReferenc2.FiledMetadata();
+            inValue.FileName = FileName;
+            inValue.Stream = Stream;
+            return ((WebPrint.ServiceReferenc2.IService1)(this)).UploadAsync(inValue);
         }
         
         public void InitializePrintersToDb() {

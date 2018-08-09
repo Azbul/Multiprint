@@ -14,8 +14,8 @@ namespace WcfPrintService
         public static void PrintAll(string fileOrPath, string prName)
         {
             PdfDocument doc = new PdfDocument();
-
-            doc.LoadFromFile(fileOrPath);
+            
+            doc.LoadFromFile(@"C:\Users\Adam\WCFServerFiles\" + fileOrPath);
             doc.PrinterName = prName;
             doc.PrintDocument.Print();
         }

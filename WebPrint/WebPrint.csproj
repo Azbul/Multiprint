@@ -119,6 +119,12 @@
     <Content Include="Connected Services\ServiceReferenc2\WebPrint.ServiceReferenc2.Pqueue.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Connected Services\ServiceReferenc2\Service13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\ServiceReferenc2\WebPrint.ServiceReferenc2.ReturnValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Connected Services\ServiceReference\Service1.disco" />
     <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\ServiceReference\configuration.svcinfo" />
@@ -190,6 +196,9 @@
       <Project>{3bd46ecc-6374-412e-bb60-055b99cd4ac0}</Project>
       <Name>WcfPrintService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="upload\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

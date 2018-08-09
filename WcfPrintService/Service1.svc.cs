@@ -8,6 +8,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Data.Entity;
+using System.IO;
 
 namespace WcfPrintService
 {
@@ -22,6 +23,26 @@ namespace WcfPrintService
         // context.Configuration.AutoDetectChangesEnabled = false;
         // context.ChangeTracker.DetectChanges();
         
+        public ReturnValue Upload(FiledMetadata metadata)
+        {
+            var buffer = new byte[1024];
+            var bytesRead = metadata.Stream.Read(buffer, 0, buffer.Length);
+            try
+            {
+                using (var outputStream = //сделать удаление файлов после печати
+                    new FileStream(@"C:\Users\Adam\WCFServerFiles\" + metadata.FileName, FileMode.Create, FileAccess.Write))
+                    while(bytesRead > 0)
+                    {
+                        outputStream.Write(buffer, 0, bytesRead);
+                        bytesRead = metadata.Stream.Read(buffer, 0, buffer.Length);
+                    }
+                return new ReturnValue { UploadSucceed = true };
+            }
+            catch
+            {
+                return new ReturnValue { UploadSucceed = false };
+            }
+        }
 
         public void InitializePrintersToDb()
         {

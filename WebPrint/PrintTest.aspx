@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" %>
-
+<%@ Import Namespace ="System.IO"  %>
 <script runat="server">
 
 
@@ -109,17 +109,95 @@
 
         FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
 
-        string splt = Server.MapPath(UploadField.PostedFile.FileName);
-        String[] elements = Regex.Split(splt, @"\\");
-        string pth = "";
-        foreach (var el in elements)
-            pth += el + @"\";
-
-        cl.Print(pth,  ComboBox1.SelectedItem.Text);  // ! клиент и сервис на одном сервере; иначе- отправлять потоком в сервис
+        //TEST3
+        UploadFile();
+        cl.Print(UploadField.PostedFile.FileName,  ComboBox1.SelectedItem.Text);  // ! клиент и сервис на одном сервере; иначе- отправлять потоком в сервис
     }
 
+    #region SendFileWtihServiceURL
+    /*
+    public static void HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc) {
+        System.Diagnostics.Debug.Write(string.Format("Uploading {0} to {1}", file, url));
+        string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+        byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
 
+        System.Net.HttpWebRequest wr = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+        wr.ContentType = "multipart/form-data; boundary=" + boundary;
+        wr.Method = "POST";
+        wr.KeepAlive = true;
+        wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
 
+        System.IO.Stream rs = wr.GetRequestStream();
+
+        string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+        foreach (string key in nvc.Keys)
+        {
+            rs.Write(boundarybytes, 0, boundarybytes.Length);
+            string formitem = string.Format(formdataTemplate, key, nvc[key]);
+            byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
+            rs.Write(formitembytes, 0, formitembytes.Length);
+        }
+        rs.Write(boundarybytes, 0, boundarybytes.Length);
+
+        string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+        string header = string.Format(headerTemplate, paramName, file, contentType);
+        byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
+        rs.Write(headerbytes, 0, headerbytes.Length);
+
+        System.IO.FileStream fileStream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+        byte[] buffer = new byte[4096];
+        int bytesRead = 0;
+        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0) {
+            rs.Write(buffer, 0, bytesRead);
+        }
+        fileStream.Close();
+
+        byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+        rs.Write(trailer, 0, trailer.Length);
+        rs.Close();
+
+        System.Net.WebResponse wresp = null;
+        try {
+            wresp = wr.GetResponse();
+            System.IO.Stream stream2 = wresp.GetResponseStream();
+            System.IO.StreamReader reader2 = new System.IO.StreamReader(stream2);
+            System.Diagnostics.Debug.Write(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
+        } catch(Exception ex) {
+            System.Diagnostics.Debug.Write(ex.Message);
+            if(wresp != null) {
+                wresp.Close();
+                wresp = null;
+            }
+        } finally {
+            wr = null;
+        }
+    }
+    ЗАПУСК 
+
+         NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("id", "TTR");
+        nvc.Add("btn-submit-photo", "Upload");
+        HttpUploadFile("http://localhost:53432/upload", @"C:\Users\Adam\Desktop\example.pdf", "file", "application/pdf", nvc);
+         */
+    #endregion
+
+    void UploadFile()
+    {
+        HttpPostedFile file = this.UploadField.PostedFile; 
+        string fileName = file.FileName;
+        string path = Server.MapPath(null) + "\\upload\\" + fileName;
+        file.SaveAs(path);
+
+        //var fileName = this.UploadField.PostedFile.FileName;
+        //var fullFileName = Server.MapPath(UploadField.PostedFile.FileName);
+        using ( var inputStream = File.OpenRead(path))
+        {
+            var result = cl.Upload(fileName, inputStream);
+            this.logField.Text = result ? "Файл передан" : "Ошибки" ;
+        }
+    }
+
+    #region Useful
     /*
                            <SelectedItems>
                                <ext:ListItem Value="2" (or Index="n") Mode="Raw" />
@@ -129,6 +207,8 @@
                                <Select Handler="#{StatusField}.setValue(#{ComboBox1}.store.getAt(1).get('price')));" />
                            </Listeners>
     */
+    #endregion
+
 </script>
 
 
@@ -252,6 +332,16 @@
                             Width="260"
                             EmptyText="Неизвестно"
                             />
+
+                             <ext:TextField
+                            ID="logField"
+                            runat="server"
+                            Name="log"
+                            ReadOnly="true"
+                            FieldLabel="Log"
+                            Width="260"
+                            EmptyText="log field"
+                            />
                             </Items>
                         </ext:FieldSet>
 
@@ -282,8 +372,7 @@
                     runat="server" 
                     Text="Печать"
                     Icon="Printer" 
-                    OnDirectClick="Print_Click"
-                    />
+                    OnDirectClick="Print_Click"/>
             </Buttons>
                             
         </ext:Panel>

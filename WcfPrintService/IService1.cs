@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.IO;
 
 namespace WcfPrintService
 {
@@ -12,6 +13,8 @@ namespace WcfPrintService
     [ServiceContract]
     public interface IService1
     {
+        [OperationContract]
+        ReturnValue Upload(FiledMetadata metadata);
 
         [OperationContract]
         void InitializePrintersToDb();
@@ -26,8 +29,25 @@ namespace WcfPrintService
         List<Pqueue> GetPqueuesFromDb();
 
         [OperationContract]
-        void Print(string fileOrPath, string printerName);
-       
+        void Print(string fileOrPath, string printerName);     
+    }
+
+    [MessageContract]
+    public class FiledMetadata
+    {
+        [MessageHeader(MustUnderstand =true)]
+        public string FileName { get; set; }
+
+        [MessageBodyMember(Order =1)]
+        public Stream Stream { get; set; }
+
+    }
+
+    [MessageContract]
+    public class ReturnValue
+    {
+        [MessageBodyMember]
+        public bool UploadSucceed { get; set; }
     }
 
 }

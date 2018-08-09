@@ -1,63 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:53178/PrintService/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfPrintService" />
-  <xs:element name="InitializePrintersToDb">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="InitializePrintersToDbResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetPrintersFromDb">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetPrintersFromDbResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfPrintService" minOccurs="0" name="GetPrintersFromDbResult" nillable="true" type="q1:ArrayOfPrinter" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SetQueueDataToDb">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WcfPrintService" minOccurs="0" name="pqueue" nillable="true" type="q2:Pqueue" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SetQueueDataToDbResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetPqueuesFromDb">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetPqueuesFromDbResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfPrintService" minOccurs="0" name="GetPqueuesFromDbResult" nillable="true" type="q3:ArrayOfPqueue" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Print">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="fileOrPath" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="printerName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="PrintResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
+<xs:schema xmlns:tns="http://schemas.microsoft.com/Message" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/Message" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="StreamBody">
+    <xs:restriction base="xs:base64Binary" />
+  </xs:simpleType>
 </xs:schema>
