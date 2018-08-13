@@ -68,6 +68,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="fileOrPath" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="printerName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="pages" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

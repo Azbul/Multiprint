@@ -1,9 +1,13 @@
 ﻿<%@ Page Language="C#" %>
 <%@ Import Namespace ="System.IO"  %>
+<%@ Import Namespace ="Spire.Pdf"  %>
+
+
 <script runat="server">
 
 
     WebPrint.ServiceReferenc2.Service1Client cl;
+    PdfDocument doc;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -33,7 +37,7 @@
 
                 prname = WebPrint.GlobalVariables.Printers.First(p => p.Id == WebPrint.GlobalVariables.Pqueues[i].PrinterId).Prn_name   ,
 
-                pagetoprint = WebPrint.GlobalVariables.Pqueues[i].PapersPrinting,
+                pagetoprint = WebPrint.GlobalVariables.Pqueues[i].PrintPages,
 
                 pcname = WebPrint.GlobalVariables.Pqueues[i].PcName,
 
@@ -68,50 +72,15 @@
         this.Store1.DataBind();
     }
 
-    void SetStatusText()
+    protected void SetPrintersLocalData()
     {
         this.StatusField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
+        this.PcNameField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Pc_name;
     }
 
     protected void OnComboBoxSelected(object sender, DirectEventArgs e)
     {
-        SetStatusText();
-        this.PcNameField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Pc_name;
-
-    }
-
-    protected void Print_Click(object sender, DirectEventArgs e)
-    {
-        cl.SetQueueDataToDb(new WebPrint.ServiceReferenc2.Pqueue
-        {     //поля должны заполнятся данными из интерфейса!
-            PageFrom = 1, //docFirstPage
-
-            PageTo = 7,  //lastP
-
-            PrintPages = " 7",  //userPages or all
-
-            PrinterId = Convert.ToInt32(this.ComboBox1.SelectedItem.Value),
-
-            Filename = this.UploadField.PostedFile.FileName,
-
-            FileStatus = 1, //???   ----------------------
-
-            PapersPrinting = 0,  //realtime update ?      |
-
-            PrintedConfirm = 0, // -----------------------
-
-            PcName = this.PcNameField.Text, //сделать поле в окне принт и брать оттуда
-
-            PqueueDateTime = DateTime.Now.ToString()
-        });
-
-        //System.Threading.Thread.Sleep(10);
-
-        FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
-
-        //TEST3
-        UploadFile();
-        cl.Print(UploadField.PostedFile.FileName,  ComboBox1.SelectedItem.Text);  // ! клиент и сервис на одном сервере; иначе- отправлять потоком в сервис
+        SetPrintersLocalData();
     }
 
     #region SendFileWtihServiceURL
@@ -180,21 +149,108 @@
         HttpUploadFile("http://localhost:53432/upload", @"C:\Users\Adam\Desktop\example.pdf", "file", "application/pdf", nvc);
          */
     #endregion
-
+    string path;
     void UploadFile()
-    {
-        HttpPostedFile file = this.UploadField.PostedFile; 
+    {    //to client directory
+        HttpPostedFile file = this.UploadField.PostedFile;
         string fileName = file.FileName;
-        string path = Server.MapPath(null) + "\\upload\\" + fileName;
+        path = Server.MapPath(null) + "\\upload\\" + fileName;
         file.SaveAs(path);
 
-        //var fileName = this.UploadField.PostedFile.FileName;
-        //var fullFileName = Server.MapPath(UploadField.PostedFile.FileName);
-        using ( var inputStream = File.OpenRead(path))
+        //to server directory
+        var result = false;
+        using (var inputStream = File.OpenRead(path))
         {
-            var result = cl.Upload(fileName, inputStream);
-            this.logField.Text = result ? "Файл передан" : "Ошибки" ;
+            result = cl.Upload(fileName, inputStream);
+            // this.logField.Text = result ? "Файл передан" : "Ошибки";
         }
+    }
+
+    protected void SetQueueDataToDb()
+    {
+        //doc.LoadFromFile(path);
+
+        cl.SetQueueDataToDb(new WebPrint.ServiceReferenc2.Pqueue
+        {     //поля должны заполнятся данными из интерфейса!
+            PageFrom = 1, //docFirstPage
+
+            PageTo = doc.Pages.Count,  //lastP
+
+            PrintPages = this.All.Checked ? doc.Pages.Count.ToString() : this.pagesField.Text,  //userPages or all
+
+            PrinterId = Convert.ToInt32(this.ComboBox1.SelectedItem.Value),
+
+            Filename = this.UploadField.PostedFile.FileName,
+
+            FileStatus = 1, //???   ----------------------
+
+            PapersPrinting = 0,  //realtime update ?      | все это сделать через update таблицы в сервисе
+
+            PrintedConfirm = 0, // -----------------------
+
+            PcName = this.PcNameField.Text,
+
+            PqueueDateTime = DateTime.Now.ToString()
+        });
+    }
+
+    bool AllCorrect()
+    { //сначала проверка файла, принтера
+        doc = new PdfDocument();
+        UploadFile();         //--------------------------------------------------------------
+        doc.LoadFromFile(path);
+        int filePagesCount = doc.Pages.Count;
+        string pages = this.pagesField.Text;
+
+        if (this.Any.Checked)
+        {
+            try
+            {
+                if (pages.Contains("-"))
+                {
+                    string[] strmass = pages.Split('-');
+
+                    int from = Convert.ToInt32(strmass[0]);
+                    int to = Convert.ToInt32(strmass[1]);
+                    if (from > filePagesCount || to > filePagesCount)
+                        return false;
+                }
+                else if (Convert.ToInt32(pages) > filePagesCount)
+                    return false;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected void Print_Click(object sender, DirectEventArgs e)
+    {
+        if (AllCorrect())
+        {
+            SetQueueDataToDb();   //------------------------------------------------------
+            FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
+            this.logField.Text = "correct";
+
+             if (this.All.Checked)
+                 cl.Print(UploadField.PostedFile.FileName, ComboBox1.SelectedItem.Text, null);
+
+             if (this.Any.Checked)
+                 cl.Print(UploadField.PostedFile.FileName, ComboBox1.SelectedItem.Text, pagesField.Text); // сделать одностраничную печать
+
+        }
+        else
+            this.logField.Text = "incorrect field";
+
+        File.Delete(path); //-----------------------------------------------------------
+    }
+
+    protected void Refresh_Click(object sender, DirectEventArgs e)
+    {
+        FillPrinterUI();
     }
 
     #region Useful
@@ -261,7 +317,7 @@
             ID="Window1"
             runat="server" 
             Title="Печать"
-            Height="500"
+            Height="400"
             Width="600"
             Frame="true"
             Align="Start"
@@ -332,16 +388,6 @@
                             Width="260"
                             EmptyText="Неизвестно"
                             />
-
-                             <ext:TextField
-                            ID="logField"
-                            runat="server"
-                            Name="log"
-                            ReadOnly="true"
-                            FieldLabel="Log"
-                            Width="260"
-                            EmptyText="log field"
-                            />
                             </Items>
                         </ext:FieldSet>
 
@@ -356,17 +402,43 @@
                             DefaultAnchor="100%">
 
                             <Items>
-                                <ext:Radio runat="server" BoxLabel="Все" InputValue="All" Name="fav-color" Checked="true" />
-                                <ext:Radio runat="server" BoxLabel="Страницы:" InputValue="Any" Name="fav-color" />
-                                <ext:TextField ID="TextField2" runat="server" MaskRe="/[0-9,-]/"/>
+                                <ext:Radio runat="server" ID="All" BoxLabel="Все" Name="pages" Checked="true">
+                                <Listeners>
+                                     <Change Handler="#{pagesField}.enable();" />
+                                    </Listeners>
+                                </ext:Radio>
+                                <ext:Radio runat="server" ID="Any" BoxLabel="Страницы:" Name="pages">
+                                    <Listeners>
+                                     <Change Handler="#{pagesField}.disable();" />
+                                    </Listeners>
+                                </ext:Radio>
+                                <ext:TextField 
+                                    ID="pagesField"
+                                    runat="server" 
+                                    Disabled="true" 
+                                    MaskRe="/[0-9,-]/"
+                                    EmptyText="1-5"/>
                             </Items>
                         </ext:FieldSet>
                     </Items>
                 </ext:Container>
-                <ext:FileUploadField ID="UploadField" runat="server" Width="50" FieldLabel="Выбрать файл" EmptyText="Файл не выбран" Accept="application/pdf" Icon="Attach" />
-
+                <ext:TextField
+                            ID="logField"
+                            runat="server"
+                            Name="log"
+                            ReadOnly="true"
+                            FieldLabel="Log"
+                            Width="260"
+                            EmptyText="log field" />  
+                <ext:FileUploadField ID="UploadField" runat="server" FieldLabel="Выбрать файл" EmptyText="Файл не выбран" Accept="application/pdf" Icon="Attach"  />
             </Items>
             <Buttons>
+                <ext:Button 
+                    ID="Button2"
+                    runat="server" 
+                    Text="Обновить"
+                    Icon="ArrowRefresh" 
+                    OnDirectClick="Refresh_Click"/>
                 <ext:Button 
                     ID="Button1"
                     runat="server" 
@@ -406,7 +478,7 @@
                             <ext:ModelField Name="docname" Type="Auto"/>
                             <ext:ModelField Name="filestatus" Type="Float" />
                             <ext:ModelField Name="prname" Type="String" />
-                            <ext:ModelField Name="pagetoprint" Type="Int" />
+                            <ext:ModelField Name="pagetoprint" Type="String" />
                             <ext:ModelField Name="pcname" Type="Auto" />
                             <ext:ModelField Name="datetime" Type="String"/>
                         </Fields>

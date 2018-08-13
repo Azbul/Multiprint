@@ -119,9 +119,12 @@ namespace WcfPrintService
             return pqs;
         }
 
-        public void Print(string fileOrPath, string printerName)
+        public void Print(string fileOrPath, string printerName, string pages)
         {
-            SpirePrAPI.PrintAll(fileOrPath, printerName);
+            if(String.IsNullOrEmpty(pages))
+                SpirePrAPI.PrintAll(fileOrPath, printerName);
+            else
+                SpirePrAPI.PrintSelectionPages(fileOrPath, printerName, pages);
         }
 
         
