@@ -46,9 +46,11 @@ namespace WcfPrintService
 
         public void InitializePrintersToDb()
         {
-           /*Database.SetInitializer(new ContexInitializer());
-            db.Database.Initialize(true); */   // для быстрого сброса бд
-            
+            #region DropCreateDB
+            /*Database.SetInitializer(new ContexInitializer());
+             db.Database.Initialize(true); */
+            #endregion
+
             //clear table
             var countPr = db.Printers.Count();
             if (countPr != 0)

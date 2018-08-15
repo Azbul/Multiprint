@@ -11,7 +11,7 @@
 
     protected void Button1_Click(object sender, DirectEventArgs e)
     {
-        WebPrint.SpirePrAPI.Print();
+    
     }
 
     protected void Button2_Click(object sender, DirectEventArgs e)

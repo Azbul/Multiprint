@@ -231,7 +231,7 @@
         });
     }
 
-    bool CorrectPagesField()
+    bool CorrectPagesField()  
     {
         doc = new PdfDocument();
 
