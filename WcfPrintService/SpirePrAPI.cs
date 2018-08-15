@@ -7,11 +7,13 @@ using System.Drawing.Printing;
 using System.Windows.Forms;
 using System.Management;
 using System.Printing;
+using System.Data.Entity;
 
 namespace WcfPrintService
 {
     public class SpirePrAPI
     {
+
         public static void PrintAll(string fileOrPath, string prName)
         {
             PdfDocument doc = new PdfDocument();
@@ -26,8 +28,7 @@ namespace WcfPrintService
             PdfDocument doc = new PdfDocument();
             doc.LoadFromFile(@"C:\Users\Adam\WCFServerFiles\" + fileOrPath);
             doc.PrinterName = prName;
-
-
+       
             PrintDialog dialogPrint = new PrintDialog();
             dialogPrint.AllowPrintToFile = true;
             dialogPrint.AllowSomePages = true;
@@ -46,21 +47,23 @@ namespace WcfPrintService
             }
 
             doc.PrintFromPage = dialogPrint.PrinterSettings.FromPage;
-
             doc.PrintToPage = dialogPrint.PrinterSettings.ToPage;
             
             PrintDocument printDoc = doc.PrintDocument;
-
+            Handlers hnlds = new Handlers(prName);
+            printDoc.BeginPrint += new PrintEventHandler(hnlds.printDocument_BeginPrint);
+            printDoc.EndPrint += new PrintEventHandler(hnlds.printDocument_EndPrint);
             printDoc.Print();
             
         }
-        
+
+
 
         public static List<Printer> GetAllPrinters()
         {
             List<Printer> printers = new List<Printer>();
 
-            System.Management.ObjectQuery oquery = new System.Management.ObjectQuery("SELECT * FROM CIM_Printer");
+            System.Management.ObjectQuery oquery = new System.Management.ObjectQuery("SELECT * FROM Win32_Printer");
             System.Management.ManagementObjectSearcher mosearcher = new System.Management.ManagementObjectSearcher(oquery);
             System.Management.ManagementObjectCollection moc = mosearcher.Get();
 
@@ -80,7 +83,7 @@ namespace WcfPrintService
                         Prn_name = mo["Name"].ToString(),
                         Pc_name = mo["SystemName"].ToString(),
                         Status = mo.Properties["PrinterStatus"].Value.ToString(),
-                        Islocal = true//Convert.ToBoolean(mo.Properties["Local"].Value)
+                        Islocal = Convert.ToBoolean(mo.Properties["Local"].Value)
                     });
                     
                     #region SetDefaultPrinterToUI

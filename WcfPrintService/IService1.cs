@@ -9,7 +9,6 @@ using System.IO;
 
 namespace WcfPrintService
 {
-    // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени интерфейса "IService1" в коде и файле конфигурации.
     [ServiceContract]
     public interface IService1
     {
@@ -29,7 +28,7 @@ namespace WcfPrintService
         List<Pqueue> GetPqueuesFromDb();
 
         [OperationContract]
-        void Print(string fileOrPath, string printerName, string pages);     
+        void Print(string fileOrPath, int printerId, string pages);     
     }
 
     [MessageContract]

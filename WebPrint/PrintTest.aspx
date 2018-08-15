@@ -25,27 +25,63 @@
     void FillPqueueUI()
     {
         WebPrint.GlobalVariables.Pqueues = cl.GetPqueuesFromDb(); ///get all
-        int globalVarPqueueCount = WebPrint.GlobalVariables.Pqueues.Count();
+
+        //очередь пользователя
+        List<WebPrint.ServiceReferenc2.Pqueue> newObjs = (from pq in WebPrint.GlobalVariables.Pqueues where pq.PcName == System.Environment.MachineName && pq.FileStatus == 0 select pq).ToList();
+        int newObjsCount = newObjs.Count();
         var pqObjs = new List<object>();
 
-        for (int i = 0; i<globalVarPqueueCount; i++)
+        for (int i = 0; i<newObjsCount; i++)
         {
             pqObjs.Add(new {
+                docname = newObjs[i].Filename,
+
+                filestatus = WebPrint.GlobalVariables.Pqueues[i].FileStatus,
+
+                prname = WebPrint.GlobalVariables.Printers.First(p => p.Id == newObjs[i].PrinterId).Prn_name,
+
+                pagetoprint = newObjs[i].PrintPages,
+
+                pcname = newObjs[i].PcName,
+
+                datetime = newObjs[i].PqueueDateTime});
+        }
+
+        this.Store2.DataSource = pqObjs;
+        this.Store2.DataBind();
+
+
+        //таблица очередей
+        int globalVarPqueueCount = WebPrint.GlobalVariables.Pqueues.Count();
+        var pqObjs2 = new List<object>();
+        for (int i = 0; i<globalVarPqueueCount; i++)
+        {
+            pqObjs2.Add(new {
+                pid = WebPrint.GlobalVariables.Pqueues[i].Id,
+
+                pagefrom = WebPrint.GlobalVariables.Pqueues[i].PageFrom,
+
+                pageto = WebPrint.GlobalVariables.Pqueues[i].PageTo,
+
+                printpages = WebPrint.GlobalVariables.Pqueues[i].PrintPages,
+                
+                printerid = WebPrint.GlobalVariables.Pqueues[i].PrinterId,
+
                 docname = WebPrint.GlobalVariables.Pqueues[i].Filename,
 
                 filestatus = WebPrint.GlobalVariables.Pqueues[i].FileStatus,
 
-                prname = WebPrint.GlobalVariables.Printers.First(p => p.Id == WebPrint.GlobalVariables.Pqueues[i].PrinterId).Prn_name   ,
+                papersprint = WebPrint.GlobalVariables.Pqueues[i].PapersPrinting,
 
-                pagetoprint = WebPrint.GlobalVariables.Pqueues[i].PrintPages,
+                printedcomfim = WebPrint.GlobalVariables.Pqueues[i].PrintedConfirm,
 
                 pcname = WebPrint.GlobalVariables.Pqueues[i].PcName,
 
                 datetime = WebPrint.GlobalVariables.Pqueues[i].PqueueDateTime});
         }
 
-        this.Store2.DataSource = pqObjs;
-        this.Store2.DataBind();
+        this.Store3.DataSource = pqObjs2;
+        this.Store3.DataBind();
     }
 
     void FillPrinterUI()
@@ -57,7 +93,7 @@
         var PrObjs = new List<object>() ;
 
         for (int i = 0; i < globalVarPrintCount; i++)
-        {                       ////здесь проверка на локал и распределение
+        {
             PrObjs.Add(new  {
                 pid = WebPrint.GlobalVariables.Printers[i].Id,
 
@@ -65,7 +101,7 @@
 
                 pcname = WebPrint.GlobalVariables.Printers[i].Pc_name,
 
-                status = WebPrint.GlobalVariables.Printers[i].Status });            //get data from db to client (request IsPostBack)
+                status = WebPrint.GlobalVariables.Printers[i].Status });
         }
 
         this.Store1.DataSource = PrObjs;
@@ -74,7 +110,7 @@
 
     protected void SetPrintersLocalData()
     {
-        this.StatusField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //ВСЕ ДОБАВИТЬ В <form>, ИНЧАЧЕ НЕ РАБОТАЕТ
+        this.StatusField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Status.ToString();  //combobox ДОБАВИТЬ В <form>, иначе данные не подгружаются
         this.PcNameField.Text = (WebPrint.GlobalVariables.Printers.First(p => p.Id == Convert.ToInt32(ComboBox1.SelectedItem.Value))).Pc_name;
     }
 
@@ -141,7 +177,7 @@
             wr = null;
         }
     }
-    ЗАПУСК 
+    ЗАПУСК ПЕРЕДАЧИ
 
          NameValueCollection nvc = new NameValueCollection();
         nvc.Add("id", "TTR");
@@ -149,6 +185,7 @@
         HttpUploadFile("http://localhost:53432/upload", @"C:\Users\Adam\Desktop\example.pdf", "file", "application/pdf", nvc);
          */
     #endregion
+
     string path;
     void UploadFile()
     {    //to client directory
@@ -182,22 +219,24 @@
 
             Filename = this.UploadField.PostedFile.FileName,
 
-            FileStatus = 1, //???   ----------------------
+            FileStatus = 0, //      ----------------------   на очереди - 0 / печать... - 1 / распечатан - 2 
 
             PapersPrinting = 0,  //realtime update ?      | все это сделать через update таблицы в сервисе
 
             PrintedConfirm = 0, // -----------------------
 
-            PcName = this.PcNameField.Text,
+            PcName = System.Environment.MachineName,  //имя пк клиента
 
             PqueueDateTime = DateTime.Now.ToString()
         });
     }
 
-    bool AllCorrect()
-    { //сначала проверка файла, принтера
+    bool CorrectPagesField()
+    {
         doc = new PdfDocument();
+
         UploadFile();         //--------------------------------------------------------------
+
         doc.LoadFromFile(path);
         int filePagesCount = doc.Pages.Count;
         string pages = this.pagesField.Text;
@@ -229,21 +268,34 @@
 
     protected void Print_Click(object sender, DirectEventArgs e)
     {
-        if (AllCorrect())
+        if (!this.UploadField.HasFile)
         {
-            SetQueueDataToDb();   //------------------------------------------------------
-            FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
-            this.logField.Text = "correct";
-
-             if (this.All.Checked)
-                 cl.Print(UploadField.PostedFile.FileName, ComboBox1.SelectedItem.Text, null);
-
-             if (this.Any.Checked)
-                 cl.Print(UploadField.PostedFile.FileName, ComboBox1.SelectedItem.Text, pagesField.Text); // сделать одностраничную печать
-
+            this.logField.Text = "Выберите файл!";
+            return;
         }
-        else
-            this.logField.Text = "incorrect field";
+
+        if (this.ComboBox1.IsEmpty)
+        {
+            this.logField.Text = "Выберите принтер!";
+            return;
+        }
+
+        if (!CorrectPagesField())
+        {
+            this.logField.Text = "Недопустимый диапазон!";
+            return;
+        }
+
+        SetQueueDataToDb();   //------------------------------------------------------
+        FillPqueueUI();  //возможно не работал из-за того, что вызывался в page load без ajax
+
+        this.logField.Text = "correct";
+
+        if (this.All.Checked)
+            cl.Print(UploadField.PostedFile.FileName, Convert.ToInt32(ComboBox1.SelectedItem.Value), null);
+
+        if (this.Any.Checked)
+            cl.Print(UploadField.PostedFile.FileName, Convert.ToInt32(ComboBox1.SelectedItem.Value), pagesField.Text);
 
         File.Delete(path); //-----------------------------------------------------------
     }
@@ -253,17 +305,6 @@
         FillPrinterUI();
     }
 
-    #region Useful
-    /*
-                           <SelectedItems>
-                               <ext:ListItem Value="2" (or Index="n") Mode="Raw" />
-                           </SelectedItems>
-
-                           <Listeners>
-                               <Select Handler="#{StatusField}.setValue(#{ComboBox1}.store.getAt(1).get('price')));" />
-                           </Listeners>
-    */
-    #endregion
 
 </script>
 
@@ -450,10 +491,10 @@
         </ext:Panel>
         </Items>
     </ext:Viewport>
-       
+      
     <ext:Window
     runat="server"
-    Title="Документы на очередь"
+    Title="Документы на очереди"
     Width="800"
     Height="400"
     MinWidth="300"
@@ -476,7 +517,7 @@
                     <ext:Model runat="server">
                         <Fields>
                             <ext:ModelField Name="docname" Type="Auto"/>
-                            <ext:ModelField Name="filestatus" Type="Float" />
+                            <ext:ModelField Name="filestatus" Type="String" />
                             <ext:ModelField Name="prname" Type="String" />
                             <ext:ModelField Name="pagetoprint" Type="String" />
                             <ext:ModelField Name="pcname" Type="Auto" />
@@ -494,7 +535,6 @@
                     Text="Документ"
                     Width="110"
                     DataIndex="docname"
-                   
                     />
 
                 <ext:Column
@@ -503,7 +543,7 @@
                     Text="Статус файла"
                     Width="110"
                     DataIndex="filestatus"
-                        />
+                     />
 
                 <ext:Column                                                          
                     ID="PrnameColumn"                                                
@@ -546,7 +586,212 @@
         </ext:GridPanel>
     </Items>
  </ext:Window>
+
+         <ext:Window
+    runat="server"
+    Title="Таблица принтеров"
+    Width="600"
+    Height="400"
+    MinWidth="300"
+    MinHeight="200"
+    X="0"
+    Y="405"
+    Closable="false"
+    Layout="FitLayout"
+    >
+        <Items>
+        <ext:GridPanel
+        ID="GridPanel2"
+        runat="server"
+        ForceFit="true"
+        StoreID="Store1"
+        Width="600" 
+        Height="400">
         
+        <ColumnModel runat="server">
+            <Columns>
+                <ext:Column
+                    ID="Column1"
+                    runat="server"
+                    Text="ID"
+                    Width="50"
+                    DataIndex="pid"
+                    />
+
+                <ext:Column
+                    ID="Column2"
+                    runat="server"
+                    Text="Принтер"
+                    Width="150"
+                    DataIndex="prname"
+                     />
+
+                <ext:Column                                                          
+                    ID="Column3"                                                
+                    runat="server"                                                   
+                    Text="Компьютер"                                                   
+                    Width="150"                                                       
+                    DataIndex="pcname"                                               
+                    />
+
+                <ext:Column
+                    ID="Column4"
+                    runat="server"
+                    Text="Статус"
+                    Width="50"
+                    DataIndex="status"
+                    />
+
+            </Columns>
+
+        </ColumnModel>
+        <View>
+            <ext:GridView runat="server" StripeRows="true" TrackOver="true" />
+        </View>
+        </ext:GridPanel>
+    </Items>
+ </ext:Window>
+
+        <ext:Window
+    runat="server"
+    Title="Таблица всех очередей"
+    Width="800"
+    Height="400"
+    MinWidth="300"
+    MinHeight="200"
+    X="610"
+    Y="405"
+    Closable="false"
+    Layout="FitLayout"
+    >
+        <Items>
+        <ext:GridPanel
+        ID="GridPanel3"
+        runat="server"
+        ForceFit="true"
+        Width="800" 
+        Height="400">
+        <Store>
+            <ext:Store ID="Store3" runat="server">
+                <Model>
+                    <ext:Model runat="server" IDProperty="pid">
+                        <Fields>
+                            <ext:ModelField Name="pid" Type="Int"/>
+                            <ext:ModelField Name="pagefrom" Type="Int"/>
+                            <ext:ModelField Name="pageto" Type="Int"/>
+                            <ext:ModelField Name="printpages" Type="String"/>
+                            <ext:ModelField Name="printerid" Type="Int"/>
+                            <ext:ModelField Name="docname" Type="String"/>
+                            <ext:ModelField Name="filestatus" Type="String" />
+                            <ext:ModelField Name="papersprint" Type="Int" />
+                            <ext:ModelField Name="printedconfim" Type="Int" />
+                            <ext:ModelField Name="pcname" Type="String" />
+                            <ext:ModelField Name="datetime" Type="String"/>
+                        </Fields>
+                    </ext:Model>
+                </Model>
+            </ext:Store>
+        </Store>
+        <ColumnModel runat="server">
+            <Columns>
+                <ext:Column
+                    ID="Column5"
+                    runat="server"
+                    Text="ID"
+                    Width="50"
+                    DataIndex="pid"
+                    />
+
+                <ext:Column
+                    ID="Column6"
+                    runat="server"
+                    Text="Первая страница"
+                    Width="110"
+                    DataIndex="pagefrom"
+                     />
+
+                <ext:Column                                                          
+                    ID="Column7"                                                
+                    runat="server"                                                   
+                    Text="Конечная страница"                                                   
+                    Width="75"                                                       
+                    DataIndex="pageto"                                               
+                    />
+
+                <ext:Column
+                    ID="Column8"
+                    runat="server"
+                    Text="Пользовательские границы"
+                    Width="70"
+                    DataIndex="printpages"
+                    
+                    />
+
+                <ext:Column
+                    ID="Column9"
+                    runat="server"
+                    Text="ID принтера"
+                    Width="80"
+                    DataIndex="printerid"
+                    />
+
+                <ext:Column
+                    ID="Column11"
+                    runat="server"
+                    Text="Документ"
+                    Width="80"
+                    DataIndex="docname"
+                    />
+
+                <ext:Column
+                    ID="Column12"
+                    runat="server"
+                    Text="Статус файла"
+                    Width="80"
+                    DataIndex="filestatus"
+                    />
+
+                <ext:Column
+                    ID="Column13"
+                    runat="server"
+                    Text="Распечатано"
+                    Width="80"
+                    DataIndex="papersprint"
+                    />
+
+                <ext:Column
+                    ID="Column14"
+                    runat="server"
+                    Text="Подверждение печати"
+                    Width="80"
+                    DataIndex="printedconfim"
+                    />
+
+                <ext:Column
+                    ID="Column15"
+                    runat="server"
+                    Text="ПК клиента"
+                    Width="80"
+                    DataIndex="pcname"
+                    />
+
+                <ext:Column
+                    ID="Column10"
+                    runat="server"
+                    Text="Поставлено в очередь"
+                    Width="130"
+                    DataIndex="datetime"
+                    />
+            </Columns>
+
+        </ColumnModel>
+        <View>
+            <ext:GridView runat="server" StripeRows="true" TrackOver="true" />
+        </View>
+        </ext:GridPanel>
+    </Items>
+ </ext:Window>
+
  </form>
 </body>
 </html>

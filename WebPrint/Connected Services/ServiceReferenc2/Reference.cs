@@ -363,10 +363,10 @@ namespace WebPrint.ServiceReferenc2 {
         System.Threading.Tasks.Task<WebPrint.ServiceReferenc2.Pqueue[]> GetPqueuesFromDbAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Print", ReplyAction="http://tempuri.org/IService1/PrintResponse")]
-        void Print(string fileOrPath, string printerName, string pages);
+        void Print(string fileOrPath, int printerId, string pages);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Print", ReplyAction="http://tempuri.org/IService1/PrintResponse")]
-        System.Threading.Tasks.Task PrintAsync(string fileOrPath, string printerName, string pages);
+        System.Threading.Tasks.Task PrintAsync(string fileOrPath, int printerId, string pages);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -491,12 +491,12 @@ namespace WebPrint.ServiceReferenc2 {
             return base.Channel.GetPqueuesFromDbAsync();
         }
         
-        public void Print(string fileOrPath, string printerName, string pages) {
-            base.Channel.Print(fileOrPath, printerName, pages);
+        public void Print(string fileOrPath, int printerId, string pages) {
+            base.Channel.Print(fileOrPath, printerId, pages);
         }
         
-        public System.Threading.Tasks.Task PrintAsync(string fileOrPath, string printerName, string pages) {
-            return base.Channel.PrintAsync(fileOrPath, printerName, pages);
+        public System.Threading.Tasks.Task PrintAsync(string fileOrPath, int printerId, string pages) {
+            return base.Channel.PrintAsync(fileOrPath, printerId, pages);
         }
     }
 }

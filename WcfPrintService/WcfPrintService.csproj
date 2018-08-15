@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContexInitializer.cs" />
+    <Compile Include="Handlers.cs" />
     <Compile Include="Pqueue.cs" />
     <Compile Include="Printer.cs" />
     <Compile Include="PrintersAPI.cs" />

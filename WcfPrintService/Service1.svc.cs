@@ -29,7 +29,7 @@ namespace WcfPrintService
             var bytesRead = metadata.Stream.Read(buffer, 0, buffer.Length);
             try
             {
-                using (var outputStream = //сделать удаление файлов после печати
+                using (var outputStream = //сделать удаление файлов после печати 
                     new FileStream(@"C:\Users\Adam\WCFServerFiles\" + metadata.FileName, FileMode.Create, FileAccess.Write))
                     while(bytesRead > 0)
                     {
@@ -47,40 +47,8 @@ namespace WcfPrintService
         public void InitializePrintersToDb()
         {
            /*Database.SetInitializer(new ContexInitializer());
-            db.Database.Initialize(true); */
+            db.Database.Initialize(true); */   // для быстрого сброса бд
             
-            #region TempPrintersAPI
-            /*
-            List<Printer> allPrinters = new List<Printer>()
-            {
-                //TEST PRINTERS
-                new Printer
-                {
-                    Prn_name = "Prn1",
-                    Pc_name = "PC",
-                    Islocal = true,
-                    Status = "ok"
-                },
-
-                new Printer
-                {
-                    Prn_name = "Prn2",
-                    Pc_name = "PC",
-                    Islocal = true,
-                    Status = "ok"
-                },
-
-                 new Printer
-                {
-                    Prn_name = "Prn3",
-                    Pc_name = "PC",
-                    Islocal = false,
-                    Status = "no connection"
-                },
-            };
-            */
-            #endregion
-
             //clear table
             var countPr = db.Printers.Count();
             if (countPr != 0)
@@ -89,19 +57,19 @@ namespace WcfPrintService
            // allPrinters.ForEach(p => db.Printers.Add(p));
             SpirePrAPI.GetAllPrinters().ForEach(p => db.Printers.Add(p));
             db.SaveChanges();
-            //reset id
 
+            //reset id
             db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Printers_Id_seq"" RESTART");
             db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Printers"" SET ""Id"" = DEFAULT");
         }
 
         public void SetQueueDataToDb(Pqueue pqueue)
         {
-            //db.Pqueues.RemoveRange(db.Pqueues); //clear it
-            
             db.Pqueues.Add(pqueue);
+            System.Diagnostics.Debug.Write("Id сущности: " + db.Pqueues.OrderByDescending(p => p.Id).FirstOrDefault().Id.ToString());
             db.SaveChanges();
 
+            //сброс
             //db.Database.ExecuteSqlCommand(@"ALTER SEQUENCE dbo.""Pqueues_Id_seq"" RESTART");
             //db.Database.ExecuteSqlCommand(@"UPDATE dbo.""Pqueues"" SET ""Id"" = DEFAULT");
         }
@@ -119,12 +87,14 @@ namespace WcfPrintService
             return pqs;
         }
 
-        public void Print(string fileOrPath, string printerName, string pages)
+        public void Print(string fileOrPath, int printerId, string pages)
         {
+            string prName = db.Printers.FirstOrDefault(p => p.Id == printerId).Prn_name;
+            //if all pages
             if(String.IsNullOrEmpty(pages))
-                SpirePrAPI.PrintAll(fileOrPath, printerName);
-            else
-                SpirePrAPI.PrintSelectionPages(fileOrPath, printerName, pages);
+                SpirePrAPI.PrintAll(fileOrPath, prName);
+            else  //if selectRange pages
+                SpirePrAPI.PrintSelectionPages(fileOrPath, prName, pages);
         }
 
         
