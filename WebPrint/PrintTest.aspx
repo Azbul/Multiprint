@@ -303,8 +303,15 @@
     protected void Refresh_Click(object sender, DirectEventArgs e)
     {
         FillPrinterUI();
+        X.Msg.Info("Инфо", "Данные принтеров и таблицы принтеров обновлены").Show();
     }
 
+    protected void RefreshAllQueueTable_Click(object sender, DirectEventArgs e)
+    {
+        FillPqueueUI();
+        X.Msg.Info("Инфо", "Данные таблиц очередей обновлены").Show();
+
+    }
 
 </script>
 
@@ -585,6 +592,15 @@
         </View>
         </ext:GridPanel>
     </Items>
+        <Buttons>
+                <ext:Button 
+                    ID="Button3"
+                    runat="server" 
+                    Text="Обновить все таблицы"
+                    Icon="ArrowRefresh" 
+                    OnDirectClick="RefreshAllQueueTable_Click"/>
+                
+            </Buttons>
  </ext:Window>
 
          <ext:Window
